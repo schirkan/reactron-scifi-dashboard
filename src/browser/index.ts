@@ -7,7 +7,11 @@ export const components: IReactronComponentDefinition[] = [{
     description: 'Dashboard',
     displayName: 'Dashboard',
     type: 'content',
-    fields: [],
+    fields: [{
+        name: 'test',
+        displayName: 'test',
+        valueType: 'boolean'
+    }],
 }];
 
 export * from './components/Dashboard';

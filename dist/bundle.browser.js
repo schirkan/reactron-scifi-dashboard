@@ -37,6 +37,162 @@ System.register(['react'], function (exports, module) {
                 d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
             }
 
+            /**
+             * Returns a function, that, as long as it continues to be invoked, will not
+             * be triggered. The function will be called after it stops being called for
+             * N milliseconds. If `immediate` is passed, trigger the function on the
+             * leading edge, instead of the trailing. The function also has a property 'clear' 
+             * that is a function which will clear the timer to prevent previously scheduled executions. 
+             *
+             * @source underscore.js
+             * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+             * @param {Function} function to wrap
+             * @param {Number} timeout in ms (`100`)
+             * @param {Boolean} whether to execute at the beginning (`false`)
+             * @api public
+             */
+            function debounce(func, wait, immediate){
+              var timeout, args, context, timestamp, result;
+              if (null == wait) wait = 100;
+
+              function later() {
+                var last = Date.now() - timestamp;
+
+                if (last < wait && last >= 0) {
+                  timeout = setTimeout(later, wait - last);
+                } else {
+                  timeout = null;
+                  if (!immediate) {
+                    result = func.apply(context, args);
+                    context = args = null;
+                  }
+                }
+              }
+              var debounced = function(){
+                context = this;
+                args = arguments;
+                timestamp = Date.now();
+                var callNow = immediate && !timeout;
+                if (!timeout) timeout = setTimeout(later, wait);
+                if (callNow) {
+                  result = func.apply(context, args);
+                  context = args = null;
+                }
+
+                return result;
+              };
+
+              debounced.clear = function() {
+                if (timeout) {
+                  clearTimeout(timeout);
+                  timeout = null;
+                }
+              };
+              
+              debounced.flush = function() {
+                if (timeout) {
+                  result = func.apply(context, args);
+                  context = args = null;
+                  
+                  clearTimeout(timeout);
+                  timeout = null;
+                }
+              };
+
+              return debounced;
+            }
+            // Adds compatibility for ES modules
+            debounce.debounce = debounce;
+
+            var debounce_1 = debounce;
+
+            var style = {
+                position: "absolute",
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0
+            };
+            // Measure's the element's bounding box and then renders children
+            var MeasureAndRender = /** @class */ (function (_super) {
+                __extends(MeasureAndRender, _super);
+                function MeasureAndRender() {
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.state = { position: undefined };
+                    _this.onWindowResize = debounce_1(function () { return _this.measure(); }, 100);
+                    return _this;
+                }
+                MeasureAndRender.prototype.componentDidMount = function () {
+                    this.measure();
+                    window.addEventListener("resize", this.onWindowResize);
+                };
+                MeasureAndRender.prototype.componentWillUnmount = function () {
+                    window.removeEventListener("resize", this.onWindowResize);
+                };
+                MeasureAndRender.prototype.measure = function () {
+                    if (this.el) {
+                        this.setState({ position: this.el.getBoundingClientRect() });
+                    }
+                };
+                MeasureAndRender.prototype.render = function () {
+                    var _this = this;
+                    return (createElement("div", { style: style, ref: function (node) { return _this.el = node; } }, this.state.position && this.props.children(this.state.position)));
+                };
+                return MeasureAndRender;
+            }(Component));
+
+            var styles = {
+                position: "absolute",
+                width: "100%",
+                height: "100%"
+            };
+            var DynamicSVG = /** @class */ (function (_super) {
+                __extends(DynamicSVG, _super);
+                function DynamicSVG() {
+                    return _super !== null && _super.apply(this, arguments) || this;
+                }
+                DynamicSVG.prototype.renderSVG = function (bounds) {
+                    return (createElement("svg", { version: "1.1", xmlns: "http://www.w3.org/2000/svg", style: styles, viewBox: '0 0 ' + bounds.width + ' ' + bounds.height, preserveAspectRatio: "none" }, this.props.children(bounds)));
+                };
+                DynamicSVG.prototype.render = function () {
+                    var _this = this;
+                    return (createElement(MeasureAndRender, null, function (bounds) { return _this.renderSVG(bounds); }));
+                };
+                return DynamicSVG;
+            }(Component));
+
+            var SVGShape = /** @class */ (function (_super) {
+                __extends(SVGShape, _super);
+                function SVGShape(props) {
+                    var _this = _super.call(this, props) || this;
+                    _this.state = {
+                        pathString: _this.getPathString(_this.props.path)
+                    };
+                    return _this;
+                }
+                SVGShape.prototype.componentDidUpdate = function (prevProps, prevState) {
+                    var pathString = this.getPathString(this.props.path);
+                    if (prevState.pathString !== pathString) {
+                        this.setState({ pathString: pathString });
+                    }
+                };
+                SVGShape.prototype.getPathString = function (points) {
+                    var path = '';
+                    points.forEach(function (p, index) {
+                        path += (index ? ' L' : ' M') + p.x + ',' + p.y;
+                    });
+                    path += ' Z';
+                    return path;
+                };
+                SVGShape.prototype.render = function () {
+                    return (createElement("g", { 
+                        // id="100-by-exact"
+                        stroke: this.props.stroke, strokeWidth: this.props.strokeSize },
+                        createElement("path", { vectorEffect: "non-scaling-stroke", fill: this.props.fill, d: this.state.pathString })));
+                };
+                return SVGShape;
+            }(Component));
+
             function styleInject(css, ref) {
               if ( ref === void 0 ) ref = {};
               var insertAt = ref.insertAt;
@@ -65,7 +221,7 @@ System.register(['react'], function (exports, module) {
             }
 
             var css = "";
-            var styles = {};
+            var styles$1 = {};
             styleInject(css);
 
             var Dashboard = exports('Dashboard', /** @class */ (function (_super) {
@@ -73,8 +229,22 @@ System.register(['react'], function (exports, module) {
                 function Dashboard(props) {
                     return _super.call(this, props) || this;
                 }
+                Dashboard.prototype.renderFrame = function (bounds) {
+                    var stroke = 5;
+                    var points = [
+                        { x: bounds.width - stroke, y: stroke },
+                        { x: stroke, y: stroke },
+                        { x: stroke, y: bounds.height - stroke },
+                        { x: bounds.width - 77, y: bounds.height - stroke },
+                        { x: bounds.width - 47, y: bounds.height - 30 },
+                        { x: bounds.width - stroke, y: bounds.height - 30 },
+                    ];
+                    return createElement(SVGShape, { path: points, stroke: "#379", strokeSize: stroke, fill: "#444" });
+                };
                 Dashboard.prototype.render = function () {
-                    return (createElement("section", { className: styles['Dashboard'] }, "Dashboard"));
+                    var _this = this;
+                    return (createElement("section", { className: styles$1['Dashboard'] },
+                        createElement(DynamicSVG, null, function (bounds) { return _this.renderFrame(bounds); })));
                 };
                 return Dashboard;
             }(Component)));
@@ -85,7 +255,11 @@ System.register(['react'], function (exports, module) {
                     description: 'Dashboard',
                     displayName: 'Dashboard',
                     type: 'content',
-                    fields: [],
+                    fields: [{
+                            name: 'test',
+                            displayName: 'test',
+                            valueType: 'boolean'
+                        }],
                 }]);
 
         }
