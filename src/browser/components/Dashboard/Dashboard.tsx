@@ -1,10 +1,8 @@
+import { IReactronComponentContext } from '@schirkan/reactron-interfaces';
+import moment from 'moment';
 import * as React from 'react';
-import { CircuitBoard } from '../circuitboard';
-import { DynamicSVG } from '../DynamicSVG/DynamicSVG';
 import { IInfoItemProps, InfoItem } from '../InfoItem/InfoItem';
 import { InfoItemType } from '../InfoItem/InfoItemType';
-import { IPosition, SVGShape } from '../SVGShape/SVGShape';
-import { IReactronComponentContext } from '@schirkan/reactron-interfaces';
 
 import styles from './Dashboard.scss';
 // tslint:disable:no-string-literal
@@ -49,10 +47,24 @@ export class Dashboard extends React.Component<IDashboardProps> {
   // }
 
   private renderDate() {
+    // TODO
+    moment.locale('de');
+    moment.locale('de-de');
+    const m = moment();
+    const dayOfWeek = m.format('dddd');
+    const month = m.format("MMM");
+    const day = m.format("Do");
+
     return (
       <div className={styles['date']}>
-        <div className={styles['dayOfWeek']}>Monday</div>
-        <div className={styles['monthAndDay']}>DEZ 22</div>
+        <div className={styles['dayOfWeek']}>{dayOfWeek}</div>
+        <div className={styles['monthAndDay']}>
+          <span className={styles['month']}>{month}</span> <span>{day}</span>
+        </div>
+        <div className={styles['block4']} />
+        <div className={styles['block3']} />
+        <div className={styles['block2']} />
+        <div className={styles['block1']} />
       </div>
     );
   }
@@ -99,6 +111,24 @@ export class Dashboard extends React.Component<IDashboardProps> {
           circleEnd: 40 - condition.temp
         };
         break;
+      case 'rain':
+        infoProps = {
+          title: 'rain',
+          value: condition.clounds,
+          circleContent: 'mm',
+          circleStart: 0,
+          circleEnd: 300
+        };
+        break;
+      case 'pressure':
+        infoProps = {
+          title: 'Pressure',
+          value: condition.clounds,
+          circleContent: 'hPa',
+          circleStart: 0,
+          circleEnd: 300
+        };
+        break;
       case 'clouds':
         infoProps = {
           title: 'Clouds',
@@ -108,15 +138,26 @@ export class Dashboard extends React.Component<IDashboardProps> {
           circleEnd: 300
         };
         break;
-      default:
+      case 'humidity':
         infoProps = {
-          title: info,
-          value: 12.33,
+          title: 'Humidity',
+          value: condition.clounds,
           circleContent: '%',
-          circleStart: 90,
-          circleEnd: 180
+          circleStart: 0,
+          circleEnd: 300
         };
         break;
+      case 'wind':
+        infoProps = {
+          title: 'Wind',
+          value: condition.clounds,
+          circleContent: this.props.units === 'metric' ? 'km/h' : 'mph',
+          circleStart: 0,
+          circleEnd: 300
+        };
+        break;
+      default:
+        return 'unknown';
     }
 
     return (<InfoItem key={index} {...infoProps} />);

@@ -8,14 +8,48 @@ section.Dashboard {
         left: 40px;
         top: 40px;
         .dayOfWeek {
+            text-transform: uppercase;
             font-size: 35px;
         }
         .monthAndDay {
-            background: white;
-            color: black;
+            position: relative;
+            display: inline-block;
+            z-index: 1;
+            line-height: 60px;
+            background: #fff;
+            color: #000;
             font-weight: bold;
             font-size: 50px;
             padding: 0 0.2em;
+            border-radius: 2px;
+            .month {
+                text-transform: uppercase;
+            }
+        }
+        .block1,
+        .block2,
+        .block3,
+        .block4 {
+            height: 60px;
+            transform: skew(-20deg) translateX(-35px);
+            float: right;
+            margin-right: 3px;
+        }
+        .block1 {
+            width: 50px;
+            background: #fff;
+        }
+        .block2 {
+            width: 35px;
+            background: #eee;
+        }
+        .block3 {
+            width: 15px;
+            background: #ddd;
+        }
+        .block4 {
+            width: 10px;
+            background: #ccc;
         }
     }
     .time,
@@ -61,5 +95,6 @@ section.Dashboard {
         bottom: 20px;
         width: 3px;
         background: #ccc;
+        border-radius: 2px;
     }
 }

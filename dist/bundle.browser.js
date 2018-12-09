@@ -1,8 +1,10 @@
-System.register(['react'], function (exports, module) {
+System.register(['moment', 'react'], function (exports, module) {
     'use strict';
-    var createElement, Component;
+    var moment, createElement, Component;
     return {
         setters: [function (module) {
+            moment = module.default;
+        }, function (module) {
             createElement = module.createElement;
             Component = module.Component;
         }],
@@ -106,8 +108,8 @@ System.register(['react'], function (exports, module) {
                 return InfoItem;
             }(Component));
 
-            var css$1 = "section.Dashboard_Dashboard__2t1GB {\n  height: 100%;\n  width: 100%;\n  background: #000;\n  color: white; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH {\n    position: absolute;\n    left: 40px;\n    top: 40px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_dayOfWeek__2kp-Y {\n      font-size: 35px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_monthAndDay__1TIWe {\n      background: white;\n      color: black;\n      font-weight: bold;\n      font-size: 50px;\n      padding: 0 0.2em; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm,\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    position: absolute;\n    right: 40px;\n    font-size: 25px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm .Dashboard_label__1oDz7,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI .Dashboard_label__1oDz7 {\n      text-transform: uppercase;\n      font-weight: bold;\n      color: #ccc;\n      margin-right: 0.5em; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm {\n    top: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    top: 70px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_infos__1Iiv6 {\n    position: absolute;\n    left: 40px;\n    top: 200px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_week__24XXp {\n    position: absolute;\n    left: 40px;\n    bottom: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_content__2ay2Q {\n    position: absolute;\n    left: 400px;\n    top: 200px;\n    right: 40px;\n    bottom: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_leftLine__1PY7o {\n    position: absolute;\n    top: 20px;\n    left: 17px;\n    bottom: 20px;\n    width: 3px;\n    background: #ccc; }\n";
-            var styles$1 = {"Dashboard":"Dashboard_Dashboard__2t1GB","date":"Dashboard_date__2lNeH","dayOfWeek":"Dashboard_dayOfWeek__2kp-Y","monthAndDay":"Dashboard_monthAndDay__1TIWe","time":"Dashboard_time__1FMqm","location":"Dashboard_location__3xgOI","label":"Dashboard_label__1oDz7","infos":"Dashboard_infos__1Iiv6","week":"Dashboard_week__24XXp","content":"Dashboard_content__2ay2Q","leftLine":"Dashboard_leftLine__1PY7o"};
+            var css$1 = "section.Dashboard_Dashboard__2t1GB {\n  height: 100%;\n  width: 100%;\n  background: #000;\n  color: white; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH {\n    position: absolute;\n    left: 40px;\n    top: 40px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_dayOfWeek__2kp-Y {\n      text-transform: uppercase;\n      font-size: 35px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_monthAndDay__1TIWe {\n      position: relative;\n      display: inline-block;\n      z-index: 1;\n      line-height: 60px;\n      background: #fff;\n      color: #000;\n      font-weight: bold;\n      font-size: 50px;\n      padding: 0 0.2em;\n      border-radius: 2px; }\n      section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_monthAndDay__1TIWe .Dashboard_month__nT_Mh {\n        text-transform: uppercase; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block1__1R9fJ,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block2__3qHsy,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block3__R7UUQ,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block4__2gXjX {\n      height: 60px;\n      transform: skew(-20deg) translateX(-35px);\n      float: right;\n      margin-right: 3px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block1__1R9fJ {\n      width: 50px;\n      background: #fff; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block2__3qHsy {\n      width: 35px;\n      background: #eee; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block3__R7UUQ {\n      width: 15px;\n      background: #ddd; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block4__2gXjX {\n      width: 10px;\n      background: #ccc; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm,\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    position: absolute;\n    right: 40px;\n    font-size: 25px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm .Dashboard_label__1oDz7,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI .Dashboard_label__1oDz7 {\n      text-transform: uppercase;\n      font-weight: bold;\n      color: #ccc;\n      margin-right: 0.5em; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm {\n    top: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    top: 70px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_infos__1Iiv6 {\n    position: absolute;\n    left: 40px;\n    top: 200px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_week__24XXp {\n    position: absolute;\n    left: 40px;\n    bottom: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_content__2ay2Q {\n    position: absolute;\n    left: 400px;\n    top: 200px;\n    right: 40px;\n    bottom: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_leftLine__1PY7o {\n    position: absolute;\n    top: 20px;\n    left: 17px;\n    bottom: 20px;\n    width: 3px;\n    background: #ccc;\n    border-radius: 2px; }\n";
+            var styles$1 = {"Dashboard":"Dashboard_Dashboard__2t1GB","date":"Dashboard_date__2lNeH","dayOfWeek":"Dashboard_dayOfWeek__2kp-Y","monthAndDay":"Dashboard_monthAndDay__1TIWe","month":"Dashboard_month__nT_Mh","block1":"Dashboard_block1__1R9fJ","block2":"Dashboard_block2__3qHsy","block3":"Dashboard_block3__R7UUQ","block4":"Dashboard_block4__2gXjX","time":"Dashboard_time__1FMqm","location":"Dashboard_location__3xgOI","label":"Dashboard_label__1oDz7","infos":"Dashboard_infos__1Iiv6","week":"Dashboard_week__24XXp","content":"Dashboard_content__2ay2Q","leftLine":"Dashboard_leftLine__1PY7o"};
             styleInject(css$1);
 
             var Dashboard = exports('Dashboard', /** @class */ (function (_super) {
@@ -136,9 +138,23 @@ System.register(['react'], function (exports, module) {
                 //   );
                 // }
                 Dashboard.prototype.renderDate = function () {
+                    // TODO
+                    moment.locale('de');
+                    moment.locale('de-de');
+                    var m = moment();
+                    var dayOfWeek = m.format('dddd');
+                    var month = m.format("MMM");
+                    var day = m.format("Do");
                     return (createElement("div", { className: styles$1['date'] },
-                        createElement("div", { className: styles$1['dayOfWeek'] }, "Monday"),
-                        createElement("div", { className: styles$1['monthAndDay'] }, "DEZ 22")));
+                        createElement("div", { className: styles$1['dayOfWeek'] }, dayOfWeek),
+                        createElement("div", { className: styles$1['monthAndDay'] },
+                            createElement("span", { className: styles$1['month'] }, month),
+                            " ",
+                            createElement("span", null, day)),
+                        createElement("div", { className: styles$1['block4'] }),
+                        createElement("div", { className: styles$1['block3'] }),
+                        createElement("div", { className: styles$1['block2'] }),
+                        createElement("div", { className: styles$1['block1'] })));
                 };
                 Dashboard.prototype.renderTime = function () {
                     return (createElement("div", { className: styles$1['time'] },
@@ -169,6 +185,24 @@ System.register(['react'], function (exports, module) {
                                 circleEnd: 40 - condition.temp
                             };
                             break;
+                        case 'rain':
+                            infoProps = {
+                                title: 'rain',
+                                value: condition.clounds,
+                                circleContent: 'mm',
+                                circleStart: 0,
+                                circleEnd: 300
+                            };
+                            break;
+                        case 'pressure':
+                            infoProps = {
+                                title: 'Pressure',
+                                value: condition.clounds,
+                                circleContent: 'hPa',
+                                circleStart: 0,
+                                circleEnd: 300
+                            };
+                            break;
                         case 'clouds':
                             infoProps = {
                                 title: 'Clouds',
@@ -178,15 +212,26 @@ System.register(['react'], function (exports, module) {
                                 circleEnd: 300
                             };
                             break;
-                        default:
+                        case 'humidity':
                             infoProps = {
-                                title: info,
-                                value: 12.33,
+                                title: 'Humidity',
+                                value: condition.clounds,
                                 circleContent: '%',
-                                circleStart: 90,
-                                circleEnd: 180
+                                circleStart: 0,
+                                circleEnd: 300
                             };
                             break;
+                        case 'wind':
+                            infoProps = {
+                                title: 'Wind',
+                                value: condition.clounds,
+                                circleContent: this.props.units === 'metric' ? 'km/h' : 'mph',
+                                circleStart: 0,
+                                circleEnd: 300
+                            };
+                            break;
+                        default:
+                            return 'unknown';
                     }
                     return (createElement(InfoItem, __assign({ key: index }, infoProps)));
                 };
