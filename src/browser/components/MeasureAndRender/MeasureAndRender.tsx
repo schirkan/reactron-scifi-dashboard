@@ -21,7 +21,7 @@ const style: React.CSSProperties = {
 export class MeasureAndRender extends React.Component<IMeasureAndRenderProps, IMeasureAndRenderState> {
   public state: IMeasureAndRenderState = { position: undefined };
   private el: HTMLDivElement | null;
-  private onWindowResize = debounce(() => this.measure(), 100);
+  private onWindowResize = debounce(() => this.measure(), 100, true);
 
   public componentDidMount() {
     this.measure();

@@ -1,0 +1,40 @@
+section.InfoItem {
+    position: relative;
+    min-width: 300px;
+    min-height: 90px;
+    margin-bottom: 2em;
+    color: white;
+    .title {
+        text-transform: uppercase;
+        font-weight: bold;
+        color: #eee;
+        font-size: 20px;
+    }
+    .value {
+        font-size: 50px;
+    }
+    .circle {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 90px;
+        width: 90px;
+        border-radius: 50%;
+        .circleContent {
+            position: relative;
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            background: #444;
+            border: 8px solid #000;
+            text-align: center;
+            line-height: 60px;
+            font-size: 25px;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            color: white;
+            font-weight: bold;
+        }
+    }
+}

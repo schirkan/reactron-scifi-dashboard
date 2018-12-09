@@ -43,18 +43,14 @@ export class SVGShape extends React.Component<ISVGShapeProps, ISVGShapeState>{
 
   public render() {
     return (
-      <g
-        // id="100-by-exact"
+      <path
+        vectorEffect="non-scaling-stroke"
+        stroke-linejoin="round"
         stroke={this.props.stroke}
         strokeWidth={this.props.strokeSize}
-      >
-        <path
-          vectorEffect="non-scaling-stroke"
-          fill={this.props.fill}
-          d={this.state.pathString}
-        // id="Pane_External_Box"
-        />
-      </g>
+        fill={this.props.fill}
+        d={this.state.pathString}
+      />
     );
   }
 }
