@@ -97,7 +97,7 @@ export class Dashboard extends React.Component<IDashboardProps> {
   // export type InfoItemType = 'temp' | 'rain' | 'pressure' | 'clouds' | 'humidity' | 'wind';
 
   private renderInfoItem(info: InfoItemType, index: number) {
-    const condition = { temp: 5, clounds: 76 };
+    const condition = { temp: -5, clounds: 85, humidity: 76, pressure: 1018, rain: 2.5 };
 
     let infoProps: IInfoItemProps;
 
@@ -107,26 +107,33 @@ export class Dashboard extends React.Component<IDashboardProps> {
           title: 'Temp',
           value: condition.temp,
           circleContent: this.props.units === 'metric' ? '°C' : '°F',
-          circleStart: 0,
-          circleEnd: 40 - condition.temp
+          circleStart: 90,
+          circlePercent: (100 / 40) * condition.temp
         };
         break;
       case 'rain':
+        const maxRain = 10;
+        const rainPercent = (100 / maxRain) * condition.rain;
+
         infoProps = {
           title: 'rain',
-          value: condition.clounds,
+          value: condition.rain,
           circleContent: 'mm',
-          circleStart: 0,
-          circleEnd: 300
+          circleStart: 90,
+          circlePercent: rainPercent
         };
         break;
       case 'pressure':
+        const minPressure = 900;
+        const maxPressure = 1100;
+        const pressurePercent = (100 / (maxPressure - minPressure)) * (condition.pressure - minPressure);
+
         infoProps = {
           title: 'Pressure',
-          value: condition.clounds,
+          value: condition.pressure,
           circleContent: 'hPa',
-          circleStart: 0,
-          circleEnd: 300
+          circleStart: 90,
+          circlePercent: pressurePercent
         };
         break;
       case 'clouds':
@@ -134,26 +141,26 @@ export class Dashboard extends React.Component<IDashboardProps> {
           title: 'Clouds',
           value: condition.clounds,
           circleContent: '%',
-          circleStart: 0,
-          circleEnd: 300
+          circleStart: 90,
+          circlePercent: condition.clounds
         };
         break;
       case 'humidity':
         infoProps = {
           title: 'Humidity',
-          value: condition.clounds,
+          value: condition.humidity,
           circleContent: '%',
-          circleStart: 0,
-          circleEnd: 300
+          circleStart: 90,
+          circlePercent: condition.humidity
         };
         break;
       case 'wind':
         infoProps = {
           title: 'Wind',
-          value: condition.clounds,
+          value: 7,
           circleContent: this.props.units === 'metric' ? 'km/h' : 'mph',
-          circleStart: 0,
-          circleEnd: 300
+          circleStart: 180,
+          circlePercent: 10
         };
         break;
       default:
