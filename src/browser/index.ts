@@ -8,11 +8,6 @@ export const components: IReactronComponentDefinition[] = [{
   displayName: 'Dashboard',
   type: 'content',
   fields: [{
-    name: 'hour24',
-    displayName: '24 hour',
-    valueType: 'boolean',
-    defaultValue: true
-  }, {
     name: 'units',
     displayName: 'Temperature unit',
     valueType: 'string',

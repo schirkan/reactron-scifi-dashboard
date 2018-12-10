@@ -26,29 +26,21 @@ export class InfoItem extends React.Component<IInfoItemProps> {
     if (angle < 0) {
       start += 180;
     }
-    console.log({ percent, angle, start });
 
-    let bg = '';
+    const circleStyle: React.CSSProperties = {};
+    const circleStyleContent: React.CSSProperties = { background: dark };
 
     if (percent > 50) {
-      bg = `
-      linear-gradient(${start + angle}deg, ${light} 50%, transparent 50%, transparent), 
-      linear-gradient(${start + 180}deg, ${light} 50%, ${dark} 50%, ${dark})
+      circleStyle.backgroundImage = `
+        linear-gradient(${start + angle}deg, ${light} 50%, transparent 50%, transparent), 
+        linear-gradient(${start + 180}deg, ${light} 50%, ${dark} 50%, ${dark})
       `;
     } else {
-      bg = `
-      linear-gradient(${start + angle + 180}deg, ${dark} 50%, transparent 50%, transparent), 
-      linear-gradient(${start + 180}deg, ${light} 50%, ${dark} 50%, ${dark})
+      circleStyle.backgroundImage = `
+        linear-gradient(${start + angle + 180}deg, ${dark} 50%, transparent 50%, transparent), 
+        linear-gradient(${start + 180}deg, ${light} 50%, ${dark} 50%, ${dark})
       `;
     }
-
-    const circleStyle: React.CSSProperties = {
-      backgroundImage: bg
-    };
-
-    const circleStyleContent: React.CSSProperties = {
-      background: dark
-    };
 
     return (
       <div className={styles['circle']} style={circleStyle}>

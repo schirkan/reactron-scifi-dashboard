@@ -50,6 +50,25 @@ System.register(['moment', 'react'], function (exports, module) {
                 return __assign.apply(this, arguments);
             };
 
+            var DigitalClock = /** @class */ (function (_super) {
+                __extends(DigitalClock, _super);
+                function DigitalClock() {
+                    return _super !== null && _super.apply(this, arguments) || this;
+                }
+                DigitalClock.prototype.componentDidMount = function () {
+                    var _this = this;
+                    this.timer = window.setInterval(function () { return _this.forceUpdate(); }, 60000);
+                };
+                DigitalClock.prototype.componentWillUnmount = function () {
+                    window.clearInterval(this.timer);
+                };
+                DigitalClock.prototype.render = function () {
+                    var time = moment().tz(this.props.timezone);
+                    return time.format('LT');
+                };
+                return DigitalClock;
+            }(Component));
+
             function styleInject(css, ref) {
               if ( ref === void 0 ) ref = {};
               var insertAt = ref.insertAt;
@@ -95,20 +114,14 @@ System.register(['moment', 'react'], function (exports, module) {
                     if (angle < 0) {
                         start += 180;
                     }
-                    console.log({ percent: percent, angle: angle, start: start });
-                    var bg = '';
+                    var circleStyle = {};
+                    var circleStyleContent = { background: dark };
                     if (percent > 50) {
-                        bg = "\n      linear-gradient(" + (start + angle) + "deg, " + light + " 50%, transparent 50%, transparent), \n      linear-gradient(" + (start + 180) + "deg, " + light + " 50%, " + dark + " 50%, " + dark + ")\n      ";
+                        circleStyle.backgroundImage = "\n        linear-gradient(" + (start + angle) + "deg, " + light + " 50%, transparent 50%, transparent), \n        linear-gradient(" + (start + 180) + "deg, " + light + " 50%, " + dark + " 50%, " + dark + ")\n      ";
                     }
                     else {
-                        bg = "\n      linear-gradient(" + (start + angle + 180) + "deg, " + dark + " 50%, transparent 50%, transparent), \n      linear-gradient(" + (start + 180) + "deg, " + light + " 50%, " + dark + " 50%, " + dark + ")\n      ";
+                        circleStyle.backgroundImage = "\n        linear-gradient(" + (start + angle + 180) + "deg, " + dark + " 50%, transparent 50%, transparent), \n        linear-gradient(" + (start + 180) + "deg, " + light + " 50%, " + dark + " 50%, " + dark + ")\n      ";
                     }
-                    var circleStyle = {
-                        backgroundImage: bg
-                    };
-                    var circleStyleContent = {
-                        background: dark
-                    };
                     return (createElement("div", { className: styles['circle'], style: circleStyle },
                         createElement("div", { className: styles['circleContent'], style: circleStyleContent }, this.props.circleContent)));
                 };
@@ -128,8 +141,19 @@ System.register(['moment', 'react'], function (exports, module) {
             var Dashboard = exports('Dashboard', /** @class */ (function (_super) {
                 __extends(Dashboard, _super);
                 function Dashboard(props) {
-                    return _super.call(this, props) || this;
+                    var _this = _super.call(this, props) || this;
+                    _this.state = {};
+                    return _this;
                 }
+                Dashboard.prototype.componentDidMount = function () {
+                    var _this = this;
+                    this.context.topics.subscribe('system-settings-updated', function () { return _this.forceUpdate(); });
+                    var weatherService = this.context.getService('WeatherService', 'reactron-openweathermap');
+                    if (weatherService) {
+                        weatherService.getFiveDaysForecast({ zip: this.props.location.zip, cityName: this.props.location.cityName })
+                            .then(function (response) { return _this.setState({ weatherForecast: response }); });
+                    }
+                };
                 /* <DynamicSVG>
                     {bounds => this.renderFrame(bounds)}
                   </DynamicSVG> */
@@ -151,10 +175,8 @@ System.register(['moment', 'react'], function (exports, module) {
                 //   );
                 // }
                 Dashboard.prototype.renderDate = function () {
-                    // TODO
-                    moment.locale('de');
-                    moment.locale('de-de');
-                    var m = moment();
+                    var timezone = this.context.backendService.settings.get().timezone;
+                    var m = moment().tz(timezone);
                     var dayOfWeek = m.format('dddd');
                     var month = m.format("MMM");
                     var day = m.format("Do");
@@ -170,23 +192,25 @@ System.register(['moment', 'react'], function (exports, module) {
                         createElement("div", { className: styles$1['block1'] })));
                 };
                 Dashboard.prototype.renderTime = function () {
+                    var timezone = this.context.backendService.settings.get().timezone;
                     return (createElement("div", { className: styles$1['time'] },
                         createElement("span", { className: styles$1['label'] }, "TIME"),
-                        createElement("span", { className: styles$1['value'] }, "17:15")));
+                        createElement("span", { className: styles$1['value'] },
+                            createElement(DigitalClock, { timezone: timezone }))));
                 };
                 Dashboard.prototype.renderLocation = function () {
                     return (createElement("div", { className: styles$1['location'] },
                         createElement("span", { className: styles$1['label'] }, "LOCATION"),
-                        createElement("span", { className: styles$1['value'] }, "D\u00FCsseldorf")));
+                        createElement("span", { className: styles$1['value'] }, this.state.weatherForecast && this.state.weatherForecast.city.name)));
                 };
                 Dashboard.prototype.renderInfoItems = function () {
                     var _this = this;
                     var items = this.props.infoItems.map(function (info, index) { return _this.renderInfoItem(info, index); });
                     return (createElement("div", { className: styles$1['infos'] }, items));
                 };
-                // export type InfoItemType = 'temp' | 'rain' | 'pressure' | 'clouds' | 'humidity' | 'wind';
                 Dashboard.prototype.renderInfoItem = function (info, index) {
-                    var condition = { temp: -5, clounds: 85, humidity: 76, pressure: 1018, rain: 2.5 };
+                    var condition = this.state.weatherForecast && this.state.weatherForecast.list[0] ||
+                        { temp: 0, clouds: 0, humidity: 0, pressure: 1000, rain: 0 };
                     var infoProps;
                     switch (info) {
                         case 'temp':
@@ -224,10 +248,10 @@ System.register(['moment', 'react'], function (exports, module) {
                         case 'clouds':
                             infoProps = {
                                 title: 'Clouds',
-                                value: condition.clounds,
+                                value: condition.clouds,
                                 circleContent: '%',
                                 circleStart: 90,
-                                circlePercent: condition.clounds
+                                circlePercent: condition.clouds
                             };
                             break;
                         case 'humidity':
@@ -242,10 +266,10 @@ System.register(['moment', 'react'], function (exports, module) {
                         case 'wind':
                             infoProps = {
                                 title: 'Wind',
-                                value: 7,
+                                value: condition.wind_speed,
                                 circleContent: this.props.units === 'metric' ? 'km/h' : 'mph',
-                                circleStart: 180,
-                                circlePercent: 10
+                                circleStart: 88 + condition.wind_deg,
+                                circlePercent: 4
                             };
                             break;
                         default:
@@ -276,11 +300,6 @@ System.register(['moment', 'react'], function (exports, module) {
                     displayName: 'Dashboard',
                     type: 'content',
                     fields: [{
-                            name: 'hour24',
-                            displayName: '24 hour',
-                            valueType: 'boolean',
-                            defaultValue: true
-                        }, {
                             name: 'units',
                             displayName: 'Temperature unit',
                             valueType: 'string',

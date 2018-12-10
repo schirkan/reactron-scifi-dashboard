@@ -37,6 +37,8 @@
     "postcss-scss": "^2.0.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "reactron-openweathermap": "github:schirkan/reactron-openweathermap",
+    "reactron-weather-underground": "github:schirkan/reactron-weather-underground",
     "rollup": "^0.67.4",
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.2.0",

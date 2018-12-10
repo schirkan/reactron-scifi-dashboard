@@ -1,6 +1,8 @@
 import { IReactronComponentContext } from '@schirkan/reactron-interfaces';
 import moment from 'moment';
 import * as React from 'react';
+import { IWeatherCondition, IWeatherForecast, IWeatherService } from 'reactron-openweathermap/src/server/index';
+import { DigitalClock } from '../DigitalClock/DigitalClock';
 import { IInfoItemProps, InfoItem } from '../InfoItem/InfoItem';
 import { InfoItemType } from '../InfoItem/InfoItemType';
 
@@ -8,18 +10,33 @@ import styles from './Dashboard.scss';
 // tslint:disable:no-string-literal
 
 export interface IDashboardProps {
-  hour24: boolean;
   units: 'metric' | 'imperial';
   location: { cityName: string, zip: string }
   infoItems: InfoItemType[];
   contentId: string;
 }
 
-export class Dashboard extends React.Component<IDashboardProps> {
+interface IDashboardState {
+  weatherForecast?: IWeatherForecast;
+}
+
+export class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
   public context: IReactronComponentContext;
 
   constructor(props: IDashboardProps) {
     super(props);
+
+    this.state = {};
+  }
+
+  public componentDidMount() {
+    this.context.topics.subscribe('system-settings-updated', () => this.forceUpdate());
+
+    const weatherService = this.context.getService<IWeatherService>('WeatherService', 'reactron-openweathermap');
+    if (weatherService) {
+      weatherService.getFiveDaysForecast({ zip: this.props.location.zip, cityName: this.props.location.cityName })
+        .then((response: any) => this.setState({ weatherForecast: response }));
+    }
   }
 
   /* <DynamicSVG>
@@ -47,10 +64,8 @@ export class Dashboard extends React.Component<IDashboardProps> {
   // }
 
   private renderDate() {
-    // TODO
-    moment.locale('de');
-    moment.locale('de-de');
-    const m = moment();
+    const timezone = this.context.backendService.settings.get().timezone;
+    const m = moment().tz(timezone);
     const dayOfWeek = m.format('dddd');
     const month = m.format("MMM");
     const day = m.format("Do");
@@ -68,19 +83,22 @@ export class Dashboard extends React.Component<IDashboardProps> {
       </div>
     );
   }
+
   private renderTime() {
+    const timezone = this.context.backendService.settings.get().timezone;
     return (
       <div className={styles['time']}>
         <span className={styles['label']}>TIME</span>
-        <span className={styles['value']}>17:15</span>
+        <span className={styles['value']}><DigitalClock timezone={timezone} /></span>
       </div>
     );
   }
+
   private renderLocation() {
     return (
       <div className={styles['location']}>
         <span className={styles['label']}>LOCATION</span>
-        <span className={styles['value']}>Düsseldorf</span>
+        <span className={styles['value']}>{this.state.weatherForecast && this.state.weatherForecast.city.name}</span>
       </div>
     );
   }
@@ -94,10 +112,9 @@ export class Dashboard extends React.Component<IDashboardProps> {
     );
   }
 
-  // export type InfoItemType = 'temp' | 'rain' | 'pressure' | 'clouds' | 'humidity' | 'wind';
-
   private renderInfoItem(info: InfoItemType, index: number) {
-    const condition = { temp: -5, clounds: 85, humidity: 76, pressure: 1018, rain: 2.5 };
+    const condition: IWeatherCondition = this.state.weatherForecast && this.state.weatherForecast.list[0] ||
+      { temp: 0, clouds: 0, humidity: 0, pressure: 1000, rain: 0 } as IWeatherCondition;
 
     let infoProps: IInfoItemProps;
 
@@ -139,10 +156,10 @@ export class Dashboard extends React.Component<IDashboardProps> {
       case 'clouds':
         infoProps = {
           title: 'Clouds',
-          value: condition.clounds,
+          value: condition.clouds,
           circleContent: '%',
           circleStart: 90,
-          circlePercent: condition.clounds
+          circlePercent: condition.clouds
         };
         break;
       case 'humidity':
@@ -157,10 +174,10 @@ export class Dashboard extends React.Component<IDashboardProps> {
       case 'wind':
         infoProps = {
           title: 'Wind',
-          value: 7,
+          value: condition.wind_speed,
           circleContent: this.props.units === 'metric' ? 'km/h' : 'mph',
-          circleStart: 180,
-          circlePercent: 10
+          circleStart: 88 + condition.wind_deg,
+          circlePercent: 4
         };
         break;
       default:
