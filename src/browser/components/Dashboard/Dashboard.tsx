@@ -1,9 +1,9 @@
 import { IReactronComponentContext } from '@schirkan/reactron-interfaces';
 import moment from 'moment';
 import * as React from 'react';
-import { IWeatherCondition, IWeatherForecast, IWeatherService } from 'reactron-openweathermap/src/server/index';
+import { IWeatherForecast, IWeatherService } from 'reactron-openweathermap/src/server/index';
 import { DigitalClock } from '../DigitalClock/DigitalClock';
-import { IInfoItemProps, InfoItem } from '../InfoItem/InfoItem';
+import { InfoItem } from '../InfoItem/InfoItem';
 import { InfoItemType } from '../InfoItem/InfoItemType';
 import { getInfoItemData } from './getInfoItemData';
 
