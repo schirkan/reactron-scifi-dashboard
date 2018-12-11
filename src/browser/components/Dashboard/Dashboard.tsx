@@ -1,11 +1,11 @@
 import { IReactronComponentContext } from '@schirkan/reactron-interfaces';
 import moment from 'moment';
-import numeral from 'numeral';
 import * as React from 'react';
 import { IWeatherCondition, IWeatherForecast, IWeatherService } from 'reactron-openweathermap/src/server/index';
 import { DigitalClock } from '../DigitalClock/DigitalClock';
 import { IInfoItemProps, InfoItem } from '../InfoItem/InfoItem';
 import { InfoItemType } from '../InfoItem/InfoItemType';
+import { getInfoItemData } from './getInfoItemData';
 
 import styles from './Dashboard.scss';
 // tslint:disable:no-string-literal
@@ -37,10 +37,10 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
     if (weatherService) {
       weatherService.getFiveDaysForecast({ zip: this.props.location.zip, cityName: this.props.location.cityName })
         .then((response: any) => {
-          this.setState({ 
+          this.setState({
             weatherForecast: response,
             units: weatherService.getOptions && weatherService.getOptions().units
-           });          
+          });
         });
     }
   }
@@ -119,77 +119,16 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
   }
 
   private renderInfoItem(info: InfoItemType, index: number) {
-    const condition: IWeatherCondition = this.state.weatherForecast && this.state.weatherForecast.list[0] ||
-      { temp: 0, clouds: 0, humidity: 0, pressure: 1000, rain: 0 } as IWeatherCondition;
-
-    let infoProps: IInfoItemProps;
-
-    switch (info) {
-      case 'temp':
-        infoProps = {
-          title: 'Temp',
-          value: numeral(condition.temp).format('0.00'),
-          circleContent: this.state.units === 'metric' ? '°C' : '°F',
-          circleStart: 90,
-          circlePercent: (100 / 40) * condition.temp
-        };
-        break;
-      case 'rain':
-        const maxRain = 10;
-        const rainPercent = (100 / maxRain) * condition.rain;
-
-        infoProps = {
-          title: 'rain',
-          value: numeral(condition.rain).format('0.00'),
-          circleContent: 'mm',
-          circleStart: 90,
-          circlePercent: rainPercent
-        };
-        break;
-      case 'pressure':
-        const minPressure = 900;
-        const maxPressure = 1100;
-        const pressurePercent = (100 / (maxPressure - minPressure)) * (condition.pressure - minPressure);
-
-        infoProps = {
-          title: 'Pressure',
-          value: numeral(condition.pressure).format('0'),
-          circleContent: 'hPa',
-          circleStart: 90,
-          circlePercent: pressurePercent
-        };
-        break;
-      case 'clouds':
-        infoProps = {
-          title: 'Clouds',
-          value: numeral(condition.clouds).format('0'),
-          circleContent: '%',
-          circleStart: 90,
-          circlePercent: condition.clouds
-        };
-        break;
-      case 'humidity':
-        infoProps = {
-          title: 'Humidity',
-          value: numeral(condition.humidity).format('0'),
-          circleContent: '%',
-          circleStart: 90,
-          circlePercent: condition.humidity
-        };
-        break;
-      case 'wind':
-        infoProps = {
-          title: 'Wind',
-          value: numeral(condition.wind_speed).format('0.00'),
-          circleContent: this.state.units === 'imperial' ? 'mph' : 'km/h',
-          circleStart: 88 + condition.wind_deg,
-          circlePercent: 4
-        };
-        break;
-      default:
-        return 'unknown';
+    if (!this.state.weatherForecast || !this.state.units) {
+      return null;
     }
 
+    const condition = this.state.weatherForecast.list[0];
+    const infoProps = getInfoItemData(info, this.state.units, condition);
+
+    if (!infoProps) {
+      return null;
+    }
     return (<InfoItem key={index} {...infoProps} />);
   }
 

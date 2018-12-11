@@ -1,14 +1,14 @@
-System.register(['numeral', 'moment', 'react'], function (exports, module) {
+System.register(['moment', 'react', 'numeral'], function (exports, module) {
     'use strict';
-    var numeral, moment, createElement, Component;
+    var moment, createElement, Component, numeral;
     return {
         setters: [function (module) {
-            numeral = module.default;
-        }, function (module) {
             moment = module.default;
         }, function (module) {
             createElement = module.createElement;
             Component = module.Component;
+        }, function (module) {
+            numeral = module.default;
         }],
         execute: function () {
 
@@ -136,6 +136,79 @@ System.register(['numeral', 'moment', 'react'], function (exports, module) {
                 return InfoItem;
             }(Component));
 
+            var getInfoItemData = function (info, units, condition) {
+                switch (info) {
+                    case 'temp':
+                        var tempCelsius = 0;
+                        var tempUnit = '';
+                        if (units === 'metric') {
+                            tempUnit = '°C';
+                            tempCelsius = condition.temp;
+                        }
+                        else if (units === 'imperial') {
+                            tempUnit = '°F';
+                            tempCelsius = (condition.temp - 32) / 1.8;
+                        }
+                        else {
+                            tempUnit = '°K';
+                            tempCelsius = condition.temp - 273.15;
+                        }
+                        return {
+                            title: 'Temp',
+                            value: numeral(condition.temp).format('0.00'),
+                            circleContent: tempUnit,
+                            circleStart: 90,
+                            circlePercent: (100 / 40) * tempCelsius
+                        };
+                    case 'rain':
+                        var maxRain = 10;
+                        var rainPercent = (100 / maxRain) * condition.rain;
+                        return {
+                            title: 'rain',
+                            value: numeral(condition.rain).format('0.00'),
+                            circleContent: 'mm',
+                            circleStart: 90,
+                            circlePercent: rainPercent
+                        };
+                    case 'pressure':
+                        var minPressure = 900;
+                        var maxPressure = 1100;
+                        var pressurePercent = (100 / (maxPressure - minPressure)) * (condition.pressure - minPressure);
+                        return {
+                            title: 'Pressure',
+                            value: numeral(condition.pressure).format('0'),
+                            circleContent: 'hPa',
+                            circleStart: 90,
+                            circlePercent: pressurePercent
+                        };
+                    case 'clouds':
+                        return {
+                            title: 'Clouds',
+                            value: numeral(condition.clouds).format('0'),
+                            circleContent: '%',
+                            circleStart: 90,
+                            circlePercent: condition.clouds
+                        };
+                    case 'humidity':
+                        return {
+                            title: 'Humidity',
+                            value: numeral(condition.humidity).format('0'),
+                            circleContent: '%',
+                            circleStart: 90,
+                            circlePercent: condition.humidity
+                        };
+                    case 'wind':
+                        return {
+                            title: 'Wind',
+                            value: numeral(condition.wind_speed).format('0.00'),
+                            circleContent: units === 'imperial' ? 'mph' : 'km/h',
+                            circleStart: 88 + condition.wind_deg,
+                            circlePercent: 4
+                        };
+                }
+                return undefined;
+            };
+
             var css$1 = "section.Dashboard_Dashboard__2t1GB {\n  height: 100%;\n  width: 100%;\n  background: #000;\n  color: white; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH {\n    position: absolute;\n    left: 40px;\n    top: 40px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_dayOfWeek__2kp-Y {\n      text-transform: uppercase;\n      font-size: 35px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_monthAndDay__1TIWe {\n      position: relative;\n      display: inline-block;\n      z-index: 1;\n      line-height: 60px;\n      background: #fff;\n      color: #000;\n      font-weight: bold;\n      font-size: 50px;\n      padding: 0 0.2em;\n      border-radius: 2px; }\n      section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_monthAndDay__1TIWe .Dashboard_month__nT_Mh {\n        text-transform: uppercase; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block1__1R9fJ,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block2__3qHsy,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block3__R7UUQ,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block4__2gXjX {\n      height: 60px;\n      transform: skew(-20deg) translateX(-35px);\n      float: right;\n      margin-right: 3px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block1__1R9fJ {\n      width: 50px;\n      background: #fff; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block2__3qHsy {\n      width: 35px;\n      background: #eee; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block3__R7UUQ {\n      width: 15px;\n      background: #ddd; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block4__2gXjX {\n      width: 10px;\n      background: #ccc; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm,\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    position: absolute;\n    right: 40px;\n    font-size: 25px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm .Dashboard_label__1oDz7,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI .Dashboard_label__1oDz7 {\n      text-transform: uppercase;\n      font-weight: bold;\n      color: #ccc;\n      margin-right: 0.5em; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm {\n    top: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    top: 70px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_infos__1Iiv6 {\n    position: absolute;\n    left: 50px;\n    top: 200px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_week__24XXp {\n    position: absolute;\n    left: 40px;\n    bottom: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_content__2ay2Q {\n    position: absolute;\n    left: 400px;\n    top: 200px;\n    right: 40px;\n    bottom: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_leftLine__1PY7o {\n    position: absolute;\n    top: 20px;\n    left: 17px;\n    bottom: 20px;\n    width: 3px;\n    background: #ccc;\n    border-radius: 2px; }\n";
             var styles$1 = {"Dashboard":"Dashboard_Dashboard__2t1GB","date":"Dashboard_date__2lNeH","dayOfWeek":"Dashboard_dayOfWeek__2kp-Y","monthAndDay":"Dashboard_monthAndDay__1TIWe","month":"Dashboard_month__nT_Mh","block1":"Dashboard_block1__1R9fJ","block2":"Dashboard_block2__3qHsy","block3":"Dashboard_block3__R7UUQ","block4":"Dashboard_block4__2gXjX","time":"Dashboard_time__1FMqm","location":"Dashboard_location__3xgOI","label":"Dashboard_label__1oDz7","infos":"Dashboard_infos__1Iiv6","week":"Dashboard_week__24XXp","content":"Dashboard_content__2ay2Q","leftLine":"Dashboard_leftLine__1PY7o"};
             styleInject(css$1);
@@ -216,71 +289,13 @@ System.register(['numeral', 'moment', 'react'], function (exports, module) {
                     return (createElement("div", { className: styles$1['infos'] }, items));
                 };
                 Dashboard.prototype.renderInfoItem = function (info, index) {
-                    var condition = this.state.weatherForecast && this.state.weatherForecast.list[0] ||
-                        { temp: 0, clouds: 0, humidity: 0, pressure: 1000, rain: 0 };
-                    var infoProps;
-                    switch (info) {
-                        case 'temp':
-                            infoProps = {
-                                title: 'Temp',
-                                value: numeral(condition.temp).format('0.00'),
-                                circleContent: this.state.units === 'metric' ? '°C' : '°F',
-                                circleStart: 90,
-                                circlePercent: (100 / 40) * condition.temp
-                            };
-                            break;
-                        case 'rain':
-                            var maxRain = 10;
-                            var rainPercent = (100 / maxRain) * condition.rain;
-                            infoProps = {
-                                title: 'rain',
-                                value: numeral(condition.rain).format('0.00'),
-                                circleContent: 'mm',
-                                circleStart: 90,
-                                circlePercent: rainPercent
-                            };
-                            break;
-                        case 'pressure':
-                            var minPressure = 900;
-                            var maxPressure = 1100;
-                            var pressurePercent = (100 / (maxPressure - minPressure)) * (condition.pressure - minPressure);
-                            infoProps = {
-                                title: 'Pressure',
-                                value: numeral(condition.pressure).format('0'),
-                                circleContent: 'hPa',
-                                circleStart: 90,
-                                circlePercent: pressurePercent
-                            };
-                            break;
-                        case 'clouds':
-                            infoProps = {
-                                title: 'Clouds',
-                                value: numeral(condition.clouds).format('0'),
-                                circleContent: '%',
-                                circleStart: 90,
-                                circlePercent: condition.clouds
-                            };
-                            break;
-                        case 'humidity':
-                            infoProps = {
-                                title: 'Humidity',
-                                value: numeral(condition.humidity).format('0'),
-                                circleContent: '%',
-                                circleStart: 90,
-                                circlePercent: condition.humidity
-                            };
-                            break;
-                        case 'wind':
-                            infoProps = {
-                                title: 'Wind',
-                                value: numeral(condition.wind_speed).format('0.00'),
-                                circleContent: this.state.units === 'imperial' ? 'mph' : 'km/h',
-                                circleStart: 88 + condition.wind_deg,
-                                circlePercent: 4
-                            };
-                            break;
-                        default:
-                            return 'unknown';
+                    if (!this.state.weatherForecast || !this.state.units) {
+                        return null;
+                    }
+                    var condition = this.state.weatherForecast.list[0];
+                    var infoProps = getInfoItemData(info, this.state.units, condition);
+                    if (!infoProps) {
+                        return null;
                     }
                     return (createElement(InfoItem, __assign({ key: index }, infoProps)));
                 };
