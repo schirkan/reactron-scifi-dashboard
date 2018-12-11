@@ -51,6 +51,12 @@ section.Dashboard {
             width: 10px;
             background: #ccc;
         }
+        .weatherIcon {
+            width: auto;
+            float: right;
+            font-size: 50px;
+            line-height: 60px;
+        }
     }
     .time,
     .location {

@@ -76,12 +76,21 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
     const month = m.format("MMM");
     const day = m.format("Do");
 
+    const weatherId = this.state.weatherForecast && this.state.weatherForecast.list[0].weather_id;
+    const weatherIcon = this.context.renderComponent({
+      moduleName: 'reactron-openweathermap',
+      componentName: 'WeatherIcon',
+      options: { weatherId },
+      className: styles['weatherIcon']
+    });
+
     return (
       <div className={styles['date']}>
         <div className={styles['dayOfWeek']}>{dayOfWeek}</div>
         <div className={styles['monthAndDay']}>
           <span className={styles['month']}>{month}</span> <span>{day}</span>
         </div>
+        {weatherIcon}
         <div className={styles['block4']} />
         <div className={styles['block3']} />
         <div className={styles['block2']} />
