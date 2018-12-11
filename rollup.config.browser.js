@@ -33,6 +33,7 @@ export default {
         'react',
         'react-dom',
         'moment',
-        'moment-timezone'
+        'moment-timezone',
+        'numeral'
     ]
 };

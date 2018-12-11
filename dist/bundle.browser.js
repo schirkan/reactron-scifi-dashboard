@@ -1,8 +1,10 @@
-System.register(['moment', 'react'], function (exports, module) {
+System.register(['numeral', 'moment', 'react'], function (exports, module) {
     'use strict';
-    var moment, createElement, Component;
+    var numeral, moment, createElement, Component;
     return {
         setters: [function (module) {
+            numeral = module.default;
+        }, function (module) {
             moment = module.default;
         }, function (module) {
             createElement = module.createElement;
@@ -151,7 +153,12 @@ System.register(['moment', 'react'], function (exports, module) {
                     var weatherService = this.context.getService('WeatherService', 'reactron-openweathermap');
                     if (weatherService) {
                         weatherService.getFiveDaysForecast({ zip: this.props.location.zip, cityName: this.props.location.cityName })
-                            .then(function (response) { return _this.setState({ weatherForecast: response }); });
+                            .then(function (response) {
+                            _this.setState({
+                                weatherForecast: response,
+                                units: weatherService.getOptions && weatherService.getOptions().units
+                            });
+                        });
                     }
                 };
                 /* <DynamicSVG>
@@ -216,8 +223,8 @@ System.register(['moment', 'react'], function (exports, module) {
                         case 'temp':
                             infoProps = {
                                 title: 'Temp',
-                                value: condition.temp,
-                                circleContent: this.props.units === 'metric' ? '°C' : '°F',
+                                value: numeral(condition.temp).format('0.00'),
+                                circleContent: this.state.units === 'metric' ? '°C' : '°F',
                                 circleStart: 90,
                                 circlePercent: (100 / 40) * condition.temp
                             };
@@ -227,7 +234,7 @@ System.register(['moment', 'react'], function (exports, module) {
                             var rainPercent = (100 / maxRain) * condition.rain;
                             infoProps = {
                                 title: 'rain',
-                                value: condition.rain,
+                                value: numeral(condition.rain).format('0.00'),
                                 circleContent: 'mm',
                                 circleStart: 90,
                                 circlePercent: rainPercent
@@ -239,7 +246,7 @@ System.register(['moment', 'react'], function (exports, module) {
                             var pressurePercent = (100 / (maxPressure - minPressure)) * (condition.pressure - minPressure);
                             infoProps = {
                                 title: 'Pressure',
-                                value: condition.pressure,
+                                value: numeral(condition.pressure).format('0'),
                                 circleContent: 'hPa',
                                 circleStart: 90,
                                 circlePercent: pressurePercent
@@ -248,7 +255,7 @@ System.register(['moment', 'react'], function (exports, module) {
                         case 'clouds':
                             infoProps = {
                                 title: 'Clouds',
-                                value: condition.clouds,
+                                value: numeral(condition.clouds).format('0'),
                                 circleContent: '%',
                                 circleStart: 90,
                                 circlePercent: condition.clouds
@@ -257,7 +264,7 @@ System.register(['moment', 'react'], function (exports, module) {
                         case 'humidity':
                             infoProps = {
                                 title: 'Humidity',
-                                value: condition.humidity,
+                                value: numeral(condition.humidity).format('0'),
                                 circleContent: '%',
                                 circleStart: 90,
                                 circlePercent: condition.humidity
@@ -266,8 +273,8 @@ System.register(['moment', 'react'], function (exports, module) {
                         case 'wind':
                             infoProps = {
                                 title: 'Wind',
-                                value: condition.wind_speed,
-                                circleContent: this.props.units === 'metric' ? 'km/h' : 'mph',
+                                value: numeral(condition.wind_speed).format('0.00'),
+                                circleContent: this.state.units === 'imperial' ? 'mph' : 'km/h',
                                 circleStart: 88 + condition.wind_deg,
                                 circlePercent: 4
                             };
@@ -300,15 +307,6 @@ System.register(['moment', 'react'], function (exports, module) {
                     displayName: 'Dashboard',
                     type: 'content',
                     fields: [{
-                            name: 'units',
-                            displayName: 'Temperature unit',
-                            valueType: 'string',
-                            values: [
-                                { value: 'metric', text: 'Celsius' },
-                                { value: 'imperial', text: 'Fahrenheit' }
-                            ],
-                            defaultValue: 'metric'
-                        }, {
                             name: 'location',
                             displayName: 'Location',
                             valueType: 'object',

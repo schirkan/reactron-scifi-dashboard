@@ -1,5 +1,6 @@
 import { IReactronComponentContext } from '@schirkan/reactron-interfaces';
 import moment from 'moment';
+import numeral from 'numeral';
 import * as React from 'react';
 import { IWeatherCondition, IWeatherForecast, IWeatherService } from 'reactron-openweathermap/src/server/index';
 import { DigitalClock } from '../DigitalClock/DigitalClock';
@@ -10,7 +11,6 @@ import styles from './Dashboard.scss';
 // tslint:disable:no-string-literal
 
 export interface IDashboardProps {
-  units: 'metric' | 'imperial';
   location: { cityName: string, zip: string }
   infoItems: InfoItemType[];
   contentId: string;
@@ -18,6 +18,7 @@ export interface IDashboardProps {
 
 interface IDashboardState {
   weatherForecast?: IWeatherForecast;
+  units?: string;
 }
 
 export class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
@@ -35,7 +36,12 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
     const weatherService = this.context.getService<IWeatherService>('WeatherService', 'reactron-openweathermap');
     if (weatherService) {
       weatherService.getFiveDaysForecast({ zip: this.props.location.zip, cityName: this.props.location.cityName })
-        .then((response: any) => this.setState({ weatherForecast: response }));
+        .then((response: any) => {
+          this.setState({ 
+            weatherForecast: response,
+            units: weatherService.getOptions && weatherService.getOptions().units
+           });          
+        });
     }
   }
 
@@ -122,8 +128,8 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
       case 'temp':
         infoProps = {
           title: 'Temp',
-          value: condition.temp,
-          circleContent: this.props.units === 'metric' ? '°C' : '°F',
+          value: numeral(condition.temp).format('0.00'),
+          circleContent: this.state.units === 'metric' ? '°C' : '°F',
           circleStart: 90,
           circlePercent: (100 / 40) * condition.temp
         };
@@ -134,7 +140,7 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
 
         infoProps = {
           title: 'rain',
-          value: condition.rain,
+          value: numeral(condition.rain).format('0.00'),
           circleContent: 'mm',
           circleStart: 90,
           circlePercent: rainPercent
@@ -147,7 +153,7 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
 
         infoProps = {
           title: 'Pressure',
-          value: condition.pressure,
+          value: numeral(condition.pressure).format('0'),
           circleContent: 'hPa',
           circleStart: 90,
           circlePercent: pressurePercent
@@ -156,7 +162,7 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
       case 'clouds':
         infoProps = {
           title: 'Clouds',
-          value: condition.clouds,
+          value: numeral(condition.clouds).format('0'),
           circleContent: '%',
           circleStart: 90,
           circlePercent: condition.clouds
@@ -165,7 +171,7 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
       case 'humidity':
         infoProps = {
           title: 'Humidity',
-          value: condition.humidity,
+          value: numeral(condition.humidity).format('0'),
           circleContent: '%',
           circleStart: 90,
           circlePercent: condition.humidity
@@ -174,8 +180,8 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
       case 'wind':
         infoProps = {
           title: 'Wind',
-          value: condition.wind_speed,
-          circleContent: this.props.units === 'metric' ? 'km/h' : 'mph',
+          value: numeral(condition.wind_speed).format('0.00'),
+          circleContent: this.state.units === 'imperial' ? 'mph' : 'km/h',
           circleStart: 88 + condition.wind_deg,
           circlePercent: 4
         };

@@ -8,15 +8,6 @@ export const components: IReactronComponentDefinition[] = [{
   displayName: 'Dashboard',
   type: 'content',
   fields: [{
-    name: 'units',
-    displayName: 'Temperature unit',
-    valueType: 'string',
-    values: [
-      { value: 'metric', text: 'Celsius' },
-      { value: 'imperial', text: 'Fahrenheit' }
-    ],
-    defaultValue: 'metric'
-  }, {
     name: 'location',
     displayName: 'Location',
     valueType: 'object',
