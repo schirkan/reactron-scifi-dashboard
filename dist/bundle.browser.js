@@ -223,15 +223,17 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                 Dashboard.prototype.componentDidMount = function () {
                     var _this = this;
                     this.context.topics.subscribe('system-settings-updated', function () { return _this.forceUpdate(); });
-                    var weatherService = this.context.getService('WeatherService', 'reactron-openweathermap');
-                    if (weatherService) {
-                        weatherService.getFiveDaysForecast({ zip: this.props.location.zip, cityName: this.props.location.cityName })
-                            .then(function (response) {
-                            _this.setState({
-                                weatherForecast: response,
-                                units: weatherService.getOptions && weatherService.getOptions().units
+                    if (this.props.location.zip || this.props.location.cityName) {
+                        var weatherService_1 = this.context.getService('WeatherService', 'reactron-openweathermap');
+                        if (weatherService_1) {
+                            weatherService_1.getFiveDaysForecast({ zip: this.props.location.zip, cityName: this.props.location.cityName })
+                                .then(function (response) {
+                                _this.setState({
+                                    weatherForecast: response,
+                                    units: weatherService_1.getOptions && weatherService_1.getOptions().units
+                                });
                             });
-                        });
+                        }
                     }
                 };
                 /* <DynamicSVG>
@@ -320,6 +322,10 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                         this.renderWeekCalendar(),
                         createElement("div", { className: styles$1['content'] }, this.props.contentId && this.context.renderComponent({ id: this.props.contentId }))));
                 };
+                Dashboard.defaultProps = {
+                    location: { cityName: '', zip: '' },
+                    infoItems: []
+                };
                 return Dashboard;
             }(Component)));
 
@@ -345,7 +351,7 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                                     valueType: 'string'
                                 }],
                             inputControl: function (props) {
-                                return props && props.value && (props.value.cityName || props.value.zip);
+                                return props && props.value && (props.value.cityName || props.value.zip) || '';
                             }
                         }, {
                             name: 'infoItems',

@@ -23,7 +23,7 @@ export const components: IReactronComponentDefinition[] = [{
       valueType: 'string'
     }],
     inputControl: (props: IInputComponentProps) => {
-      return props && props.value && (props.value.cityName || props.value.zip);
+      return props && props.value && (props.value.cityName || props.value.zip) || '';
     }
   }, {
     name: 'infoItems',

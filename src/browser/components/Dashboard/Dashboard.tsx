@@ -23,6 +23,10 @@ interface IDashboardState {
 
 export class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
   public context: IReactronComponentContext;
+  public static defaultProps: Partial<IDashboardProps> = {
+    location: { cityName: '', zip: '' },
+    infoItems: []
+  }
 
   constructor(props: IDashboardProps) {
     super(props);
@@ -33,15 +37,17 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
   public componentDidMount() {
     this.context.topics.subscribe('system-settings-updated', () => this.forceUpdate());
 
-    const weatherService = this.context.getService<IWeatherService>('WeatherService', 'reactron-openweathermap');
-    if (weatherService) {
-      weatherService.getFiveDaysForecast({ zip: this.props.location.zip, cityName: this.props.location.cityName })
-        .then((response: any) => {
-          this.setState({
-            weatherForecast: response,
-            units: weatherService.getOptions && weatherService.getOptions().units
+    if (this.props.location.zip || this.props.location.cityName) {
+      const weatherService = this.context.getService<IWeatherService>('WeatherService', 'reactron-openweathermap');
+      if (weatherService) {
+        weatherService.getFiveDaysForecast({ zip: this.props.location.zip, cityName: this.props.location.cityName })
+          .then((response: any) => {
+            this.setState({
+              weatherForecast: response,
+              units: weatherService.getOptions && weatherService.getOptions().units
+            });
           });
-        });
+      }
     }
   }
 
