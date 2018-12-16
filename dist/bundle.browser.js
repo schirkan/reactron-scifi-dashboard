@@ -1,12 +1,12 @@
 System.register(['moment', 'react', 'numeral'], function (exports, module) {
     'use strict';
-    var moment, createElement, Component, numeral;
+    var moment, Component, createElement, numeral;
     return {
         setters: [function (module) {
             moment = module.default;
         }, function (module) {
-            createElement = module.createElement;
             Component = module.Component;
+            createElement = module.createElement;
         }, function (module) {
             numeral = module.default;
         }],
