@@ -21,7 +21,7 @@ export const getInfoItemData = (info: string, units: string, condition: IWeather
       }
       return {
         title: 'Temp',
-        value: numeral(condition.temp).format('0.00'),
+        value: numeral(condition.temp).format('0.0'),
         circleContent: tempUnit,
         circleStart: 90,
         circlePercent: (100 / 40) * tempCelsius
@@ -32,7 +32,7 @@ export const getInfoItemData = (info: string, units: string, condition: IWeather
       const rainPercent = (100 / maxRain) * condition.rain;
       return {
         title: 'rain',
-        value: numeral(condition.rain).format('0.00'),
+        value: numeral(condition.rain).format('0.0'),
         circleContent: 'mm',
         circleStart: 90,
         circlePercent: rainPercent
@@ -71,7 +71,7 @@ export const getInfoItemData = (info: string, units: string, condition: IWeather
     case 'wind':
       return {
         title: 'Wind',
-        value: numeral(condition.wind_speed).format('0.00'),
+        value: numeral(condition.wind_speed).format('0.0'),
         circleContent: units === 'imperial' ? 'mph' : 'km/h',
         circleStart: 88 + condition.wind_deg,
         circlePercent: 4

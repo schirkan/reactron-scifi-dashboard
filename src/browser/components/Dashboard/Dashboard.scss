@@ -80,12 +80,18 @@ section.Dashboard {
     .infos {
         position: absolute;
         left: 50px;
+        width: 340px;
         top: 200px;
+        bottom: 40px;
+        overflow: auto;
     }
     .week {
         position: absolute;
         left: 40px;
+        right: 40px;
         bottom: 40px;
+        height: 100px;
+        overflow: hidden;
     }
     .content {
         position: absolute;
@@ -93,6 +99,7 @@ section.Dashboard {
         top: 200px;
         right: 40px;
         bottom: 40px;
+        overflow: auto;
     }
     .leftLine {
         position: absolute;

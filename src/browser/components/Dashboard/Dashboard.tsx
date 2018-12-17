@@ -1,10 +1,11 @@
 import { IReactronComponentContext } from '@schirkan/reactron-interfaces';
 import moment from 'moment';
 import * as React from 'react';
-import { IWeatherForecast, IWeatherService } from 'reactron-openweathermap/src/server/index';
+import { IWeatherForecast, IWeatherService } from 'reactron-openweathermap/src/server';
 import { DigitalClock } from '../DigitalClock/DigitalClock';
 import { InfoItem } from '../InfoItem/InfoItem';
 import { InfoItemType } from '../InfoItem/InfoItemType';
+import { WeatherInfo } from '../WeatherInfo/WeatherInfo';
 import { getInfoItemData } from './getInfoItemData';
 
 import styles from './Dashboard.scss';
@@ -148,9 +149,11 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
   }
 
   private renderWeekCalendar() {
+    const timezone = this.context.backendService.settings.get().timezone;
+
     return (
       <div className={styles['week']}>
-        Week
+        <WeatherInfo timezone={timezone} weatherForecast={this.state.weatherForecast} context={this.context} />
       </div>
     );
   }

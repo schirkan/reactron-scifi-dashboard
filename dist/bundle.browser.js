@@ -136,6 +136,85 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                 return InfoItem;
             }(Component));
 
+            var css$1 = ".WeatherInfoItem_WeatherInfoItem__6gKjc {\n  position: relative;\n  display: inline-block;\n  overflow: hidden;\n  box-sizing: border-box;\n  width: 130px;\n  height: 100px;\n  margin-right: -18px; }\n  .WeatherInfoItem_WeatherInfoItem__6gKjc .WeatherInfoItem_top__2jkvN {\n    position: absolute;\n    top: 0;\n    width: 110px;\n    line-height: 20px;\n    text-align: center;\n    font-size: 15px;\n    color: #000;\n    background: #ccc;\n    font-weight: bold;\n    border-top-left-radius: 4px;\n    border-top-right-radius: 4px; }\n  .WeatherInfoItem_WeatherInfoItem__6gKjc .WeatherInfoItem_left-top__3V6kY {\n    font-size: 1.2em;\n    line-height: 27px;\n    position: absolute;\n    left: 6px;\n    top: 22px;\n    width: 45px;\n    text-align: center; }\n    .WeatherInfoItem_WeatherInfoItem__6gKjc .WeatherInfoItem_left-top__3V6kY > div {\n      position: relative; }\n    .WeatherInfoItem_WeatherInfoItem__6gKjc .WeatherInfoItem_left-top__3V6kY:before {\n      content: \"\";\n      background: #444;\n      transform: skew(20deg);\n      right: 0;\n      top: 0;\n      position: absolute;\n      display: block;\n      width: 100%;\n      bottom: 0;\n      border-right: 1px solid #777; }\n  .WeatherInfoItem_WeatherInfoItem__6gKjc .WeatherInfoItem_left-bottom__MiGmY {\n    font-size: 1.2em;\n    line-height: 27px;\n    position: absolute;\n    left: 6px;\n    top: 51px;\n    width: 45px;\n    text-align: center; }\n    .WeatherInfoItem_WeatherInfoItem__6gKjc .WeatherInfoItem_left-bottom__MiGmY > div {\n      position: relative; }\n    .WeatherInfoItem_WeatherInfoItem__6gKjc .WeatherInfoItem_left-bottom__MiGmY:before {\n      content: \"\";\n      background: #444;\n      transform: skew(-20deg);\n      right: 0px;\n      top: 0;\n      position: absolute;\n      display: block;\n      width: 100%;\n      bottom: 0;\n      border-right: 1px solid #777; }\n  .WeatherInfoItem_WeatherInfoItem__6gKjc .WeatherInfoItem_right__2nlSj {\n    font-size: 2em;\n    line-height: 56px;\n    position: absolute;\n    right: 15px;\n    top: 22px;\n    width: 61px;\n    text-align: center; }\n    .WeatherInfoItem_WeatherInfoItem__6gKjc .WeatherInfoItem_right__2nlSj > * {\n      position: relative;\n      z-index: 1; }\n    .WeatherInfoItem_WeatherInfoItem__6gKjc .WeatherInfoItem_right__2nlSj:before {\n      content: \"\";\n      background: #444;\n      transform: skew(20deg);\n      right: 0;\n      top: 0;\n      position: absolute;\n      display: block;\n      width: 100%;\n      height: 50%;\n      border-right: 1px solid #777; }\n    .WeatherInfoItem_WeatherInfoItem__6gKjc .WeatherInfoItem_right__2nlSj:after {\n      content: \"\";\n      background: #444;\n      transform: skew(-20deg);\n      right: 0;\n      position: absolute;\n      display: block;\n      width: 100%;\n      bottom: 0;\n      z-index: 0;\n      height: 50%;\n      border-right: 1px solid #777; }\n  .WeatherInfoItem_WeatherInfoItem__6gKjc .WeatherInfoItem_bottom__2UkaX {\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    width: 110px;\n    background: #333;\n    line-height: 20px;\n    text-align: center;\n    font-size: 14px;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    border-bottom-left-radius: 4px;\n    border-bottom-right-radius: 4px; }\n";
+            var styles$1 = {"WeatherInfoItem":"WeatherInfoItem_WeatherInfoItem__6gKjc","top":"WeatherInfoItem_top__2jkvN","left-top":"WeatherInfoItem_left-top__3V6kY","left-bottom":"WeatherInfoItem_left-bottom__MiGmY","right":"WeatherInfoItem_right__2nlSj","bottom":"WeatherInfoItem_bottom__2UkaX"};
+            styleInject(css$1);
+
+            var WeatherInfoItem = /** @class */ (function (_super) {
+                __extends(WeatherInfoItem, _super);
+                function WeatherInfoItem() {
+                    return _super !== null && _super.apply(this, arguments) || this;
+                }
+                WeatherInfoItem.prototype.render = function () {
+                    return (createElement("div", { className: styles$1['WeatherInfoItem'] },
+                        createElement("div", { className: styles$1['top'], hidden: !this.props.valueTop }, this.props.valueTop),
+                        createElement("div", { className: styles$1['left-top'] },
+                            createElement("div", null, this.props.valueLeftTop)),
+                        createElement("div", { className: styles$1['left-bottom'] },
+                            createElement("div", null, this.props.valueLeftBottom)),
+                        createElement("div", { className: styles$1['right'] }, this.props.valueRight),
+                        createElement("div", { className: styles$1['bottom'] }, this.props.valueBottom)));
+                };
+                return WeatherInfoItem;
+            }(Component));
+
+            var css$2 = "section.WeatherInfo_WeatherInfo__1_2il {\n  position: relative; }\n";
+            var styles$2 = {"WeatherInfo":"WeatherInfo_WeatherInfo__1_2il"};
+            styleInject(css$2);
+
+            var WeatherInfo = /** @class */ (function (_super) {
+                __extends(WeatherInfo, _super);
+                function WeatherInfo() {
+                    return _super !== null && _super.apply(this, arguments) || this;
+                }
+                WeatherInfo.prototype.componentDidMount = function () {
+                    // 
+                };
+                WeatherInfo.prototype.componentWillUnmount = function () {
+                    // 
+                };
+                WeatherInfo.prototype.renderItem = function (condition, lastItem) {
+                    var weatherIcon = this.props.context.renderComponent({
+                        moduleName: 'reactron-openweathermap',
+                        componentName: 'WeatherIcon',
+                        options: { weatherId: condition.weather_id },
+                        className: styles$2['weatherIcon']
+                    });
+                    var date = moment(condition.dt * 1000).tz(this.props.timezone);
+                    var valueTop = date.format('L');
+                    if (lastItem) {
+                        var lastDate = moment(lastItem.dt * 1000).tz(this.props.timezone);
+                        if (date.dayOfYear() === lastDate.dayOfYear()) {
+                            valueTop = '';
+                        }
+                    }
+                    var data = {
+                        valueBottom: condition.weather_description,
+                        valueLeftBottom: numeral(condition.temp).format('0.0'),
+                        valueLeftTop: date.hour(),
+                        valueRight: weatherIcon,
+                        valueTop: valueTop,
+                    };
+                    return (createElement(WeatherInfoItem, __assign({}, data, { key: condition.dt })));
+                };
+                WeatherInfo.prototype.renderItems = function () {
+                    var _this = this;
+                    if (!this.props.weatherForecast) {
+                        return null;
+                    }
+                    var lastItem;
+                    return this.props.weatherForecast.list.slice(0, 10).map(function (item) {
+                        var result = _this.renderItem(item, lastItem);
+                        lastItem = item;
+                        return result;
+                    });
+                };
+                WeatherInfo.prototype.render = function () {
+                    return (createElement("section", { className: styles$2['WeatherInfo'] }, this.renderItems()));
+                };
+                return WeatherInfo;
+            }(Component));
+
             var getInfoItemData = function (info, units, condition) {
                 switch (info) {
                     case 'temp':
@@ -155,7 +234,7 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                         }
                         return {
                             title: 'Temp',
-                            value: numeral(condition.temp).format('0.00'),
+                            value: numeral(condition.temp).format('0.0'),
                             circleContent: tempUnit,
                             circleStart: 90,
                             circlePercent: (100 / 40) * tempCelsius
@@ -165,7 +244,7 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                         var rainPercent = (100 / maxRain) * condition.rain;
                         return {
                             title: 'rain',
-                            value: numeral(condition.rain).format('0.00'),
+                            value: numeral(condition.rain).format('0.0'),
                             circleContent: 'mm',
                             circleStart: 90,
                             circlePercent: rainPercent
@@ -200,7 +279,7 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                     case 'wind':
                         return {
                             title: 'Wind',
-                            value: numeral(condition.wind_speed).format('0.00'),
+                            value: numeral(condition.wind_speed).format('0.0'),
                             circleContent: units === 'imperial' ? 'mph' : 'km/h',
                             circleStart: 88 + condition.wind_deg,
                             circlePercent: 4
@@ -209,9 +288,9 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                 return undefined;
             };
 
-            var css$1 = "section.Dashboard_Dashboard__2t1GB {\n  height: 100%;\n  width: 100%;\n  background: #000;\n  color: white; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH {\n    position: absolute;\n    left: 40px;\n    top: 40px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_dayOfWeek__2kp-Y {\n      text-transform: uppercase;\n      font-size: 35px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_monthAndDay__1TIWe {\n      position: relative;\n      display: inline-block;\n      z-index: 1;\n      line-height: 60px;\n      background: #fff;\n      color: #000;\n      font-weight: bold;\n      font-size: 50px;\n      padding: 0 0.2em;\n      border-radius: 2px; }\n      section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_monthAndDay__1TIWe .Dashboard_month__nT_Mh {\n        text-transform: uppercase; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block1__1R9fJ,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block2__3qHsy,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block3__R7UUQ,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block4__2gXjX {\n      height: 60px;\n      transform: skew(-20deg) translateX(-35px);\n      float: right;\n      margin-right: 3px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block1__1R9fJ {\n      width: 50px;\n      background: #fff; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block2__3qHsy {\n      width: 35px;\n      background: #eee; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block3__R7UUQ {\n      width: 15px;\n      background: #ddd; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block4__2gXjX {\n      width: 10px;\n      background: #ccc; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_weatherIcon__2DKkm {\n      width: auto;\n      float: right;\n      font-size: 50px;\n      line-height: 60px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm,\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    position: absolute;\n    right: 40px;\n    font-size: 25px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm .Dashboard_label__1oDz7,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI .Dashboard_label__1oDz7 {\n      text-transform: uppercase;\n      font-weight: bold;\n      color: #ccc;\n      margin-right: 0.5em; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm {\n    top: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    top: 70px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_infos__1Iiv6 {\n    position: absolute;\n    left: 50px;\n    top: 200px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_week__24XXp {\n    position: absolute;\n    left: 40px;\n    bottom: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_content__2ay2Q {\n    position: absolute;\n    left: 400px;\n    top: 200px;\n    right: 40px;\n    bottom: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_leftLine__1PY7o {\n    position: absolute;\n    top: 20px;\n    left: 17px;\n    bottom: 20px;\n    width: 3px;\n    background: #ccc;\n    border-radius: 2px; }\n";
-            var styles$1 = {"Dashboard":"Dashboard_Dashboard__2t1GB","date":"Dashboard_date__2lNeH","dayOfWeek":"Dashboard_dayOfWeek__2kp-Y","monthAndDay":"Dashboard_monthAndDay__1TIWe","month":"Dashboard_month__nT_Mh","block1":"Dashboard_block1__1R9fJ","block2":"Dashboard_block2__3qHsy","block3":"Dashboard_block3__R7UUQ","block4":"Dashboard_block4__2gXjX","weatherIcon":"Dashboard_weatherIcon__2DKkm","time":"Dashboard_time__1FMqm","location":"Dashboard_location__3xgOI","label":"Dashboard_label__1oDz7","infos":"Dashboard_infos__1Iiv6","week":"Dashboard_week__24XXp","content":"Dashboard_content__2ay2Q","leftLine":"Dashboard_leftLine__1PY7o"};
-            styleInject(css$1);
+            var css$3 = "section.Dashboard_Dashboard__2t1GB {\n  height: 100%;\n  width: 100%;\n  background: #000;\n  color: white; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH {\n    position: absolute;\n    left: 40px;\n    top: 40px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_dayOfWeek__2kp-Y {\n      text-transform: uppercase;\n      font-size: 35px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_monthAndDay__1TIWe {\n      position: relative;\n      display: inline-block;\n      z-index: 1;\n      line-height: 60px;\n      background: #fff;\n      color: #000;\n      font-weight: bold;\n      font-size: 50px;\n      padding: 0 0.2em;\n      border-radius: 2px; }\n      section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_monthAndDay__1TIWe .Dashboard_month__nT_Mh {\n        text-transform: uppercase; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block1__1R9fJ,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block2__3qHsy,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block3__R7UUQ,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block4__2gXjX {\n      height: 60px;\n      transform: skew(-20deg) translateX(-35px);\n      float: right;\n      margin-right: 3px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block1__1R9fJ {\n      width: 50px;\n      background: #fff; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block2__3qHsy {\n      width: 35px;\n      background: #eee; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block3__R7UUQ {\n      width: 15px;\n      background: #ddd; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block4__2gXjX {\n      width: 10px;\n      background: #ccc; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_weatherIcon__2DKkm {\n      width: auto;\n      float: right;\n      font-size: 50px;\n      line-height: 60px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm,\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    position: absolute;\n    right: 40px;\n    font-size: 25px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm .Dashboard_label__1oDz7,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI .Dashboard_label__1oDz7 {\n      text-transform: uppercase;\n      font-weight: bold;\n      color: #ccc;\n      margin-right: 0.5em; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm {\n    top: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    top: 70px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_infos__1Iiv6 {\n    position: absolute;\n    left: 50px;\n    width: 340px;\n    top: 200px;\n    bottom: 40px;\n    overflow: auto; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_week__24XXp {\n    position: absolute;\n    left: 40px;\n    right: 40px;\n    bottom: 40px;\n    height: 100px;\n    overflow: hidden; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_content__2ay2Q {\n    position: absolute;\n    left: 400px;\n    top: 200px;\n    right: 40px;\n    bottom: 40px;\n    overflow: auto; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_leftLine__1PY7o {\n    position: absolute;\n    top: 20px;\n    left: 17px;\n    bottom: 20px;\n    width: 3px;\n    background: #ccc;\n    border-radius: 2px; }\n";
+            var styles$3 = {"Dashboard":"Dashboard_Dashboard__2t1GB","date":"Dashboard_date__2lNeH","dayOfWeek":"Dashboard_dayOfWeek__2kp-Y","monthAndDay":"Dashboard_monthAndDay__1TIWe","month":"Dashboard_month__nT_Mh","block1":"Dashboard_block1__1R9fJ","block2":"Dashboard_block2__3qHsy","block3":"Dashboard_block3__R7UUQ","block4":"Dashboard_block4__2gXjX","weatherIcon":"Dashboard_weatherIcon__2DKkm","time":"Dashboard_time__1FMqm","location":"Dashboard_location__3xgOI","label":"Dashboard_label__1oDz7","infos":"Dashboard_infos__1Iiv6","week":"Dashboard_week__24XXp","content":"Dashboard_content__2ay2Q","leftLine":"Dashboard_leftLine__1PY7o"};
+            styleInject(css$3);
 
             var Dashboard = exports('Dashboard', /** @class */ (function (_super) {
                 __extends(Dashboard, _super);
@@ -267,36 +346,36 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                         moduleName: 'reactron-openweathermap',
                         componentName: 'WeatherIcon',
                         options: { weatherId: weatherId },
-                        className: styles$1['weatherIcon']
+                        className: styles$3['weatherIcon']
                     });
-                    return (createElement("div", { className: styles$1['date'] },
-                        createElement("div", { className: styles$1['dayOfWeek'] }, dayOfWeek),
-                        createElement("div", { className: styles$1['monthAndDay'] },
-                            createElement("span", { className: styles$1['month'] }, month),
+                    return (createElement("div", { className: styles$3['date'] },
+                        createElement("div", { className: styles$3['dayOfWeek'] }, dayOfWeek),
+                        createElement("div", { className: styles$3['monthAndDay'] },
+                            createElement("span", { className: styles$3['month'] }, month),
                             " ",
                             createElement("span", null, day)),
                         weatherIcon,
-                        createElement("div", { className: styles$1['block4'] }),
-                        createElement("div", { className: styles$1['block3'] }),
-                        createElement("div", { className: styles$1['block2'] }),
-                        createElement("div", { className: styles$1['block1'] })));
+                        createElement("div", { className: styles$3['block4'] }),
+                        createElement("div", { className: styles$3['block3'] }),
+                        createElement("div", { className: styles$3['block2'] }),
+                        createElement("div", { className: styles$3['block1'] })));
                 };
                 Dashboard.prototype.renderTime = function () {
                     var timezone = this.context.backendService.settings.get().timezone;
-                    return (createElement("div", { className: styles$1['time'] },
-                        createElement("span", { className: styles$1['label'] }, "TIME"),
-                        createElement("span", { className: styles$1['value'] },
+                    return (createElement("div", { className: styles$3['time'] },
+                        createElement("span", { className: styles$3['label'] }, "TIME"),
+                        createElement("span", { className: styles$3['value'] },
                             createElement(DigitalClock, { timezone: timezone }))));
                 };
                 Dashboard.prototype.renderLocation = function () {
-                    return (createElement("div", { className: styles$1['location'] },
-                        createElement("span", { className: styles$1['label'] }, "LOCATION"),
-                        createElement("span", { className: styles$1['value'] }, this.state.weatherForecast && this.state.weatherForecast.city.name)));
+                    return (createElement("div", { className: styles$3['location'] },
+                        createElement("span", { className: styles$3['label'] }, "LOCATION"),
+                        createElement("span", { className: styles$3['value'] }, this.state.weatherForecast && this.state.weatherForecast.city.name)));
                 };
                 Dashboard.prototype.renderInfoItems = function () {
                     var _this = this;
                     var items = this.props.infoItems.map(function (info, index) { return _this.renderInfoItem(info, index); });
-                    return (createElement("div", { className: styles$1['infos'] }, items));
+                    return (createElement("div", { className: styles$3['infos'] }, items));
                 };
                 Dashboard.prototype.renderInfoItem = function (info, index) {
                     if (!this.state.weatherForecast || !this.state.units) {
@@ -310,17 +389,19 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                     return (createElement(InfoItem, __assign({ key: index }, infoProps)));
                 };
                 Dashboard.prototype.renderWeekCalendar = function () {
-                    return (createElement("div", { className: styles$1['week'] }, "Week"));
+                    var timezone = this.context.backendService.settings.get().timezone;
+                    return (createElement("div", { className: styles$3['week'] },
+                        createElement(WeatherInfo, { timezone: timezone, weatherForecast: this.state.weatherForecast, context: this.context })));
                 };
                 Dashboard.prototype.render = function () {
-                    return (createElement("section", { className: styles$1['Dashboard'] },
-                        createElement("div", { className: styles$1['leftLine'] }),
+                    return (createElement("section", { className: styles$3['Dashboard'] },
+                        createElement("div", { className: styles$3['leftLine'] }),
                         this.renderDate(),
                         this.renderTime(),
                         this.renderLocation(),
                         this.renderInfoItems(),
                         this.renderWeekCalendar(),
-                        createElement("div", { className: styles$1['content'] }, this.props.contentId && this.context.renderComponent({ id: this.props.contentId }))));
+                        createElement("div", { className: styles$3['content'] }, this.props.contentId && this.context.renderComponent({ id: this.props.contentId }))));
                 };
                 Dashboard.defaultProps = {
                     location: { cityName: '', zip: '' },
