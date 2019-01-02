@@ -77,17 +77,19 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
   // }
 
   private renderDate() {
-    const timezone = this.context.backendService.settings.get().timezone;
-    const m = moment().tz(timezone);
+    const m = moment().tz(this.context.settings.timezone);
     const dayOfWeek = m.format('dddd');
     const month = m.format("MMM");
     const day = m.format("Do");
 
-    const weatherId = this.state.weatherForecast && this.state.weatherForecast.list[0].weather_id;
+    const condition = this.state.weatherForecast && this.state.weatherForecast.list[0];
+    const weatherId = condition && condition.weather_id;
+    const night = condition && condition.weather_icon.endsWith('n');
+    
     const weatherIcon = this.context.renderComponent({
       moduleName: 'reactron-openweathermap',
       componentName: 'WeatherIcon',
-      options: { weatherId },
+      options: { weatherId, night },
       className: styles['weatherIcon']
     });
 
@@ -107,11 +109,10 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
   }
 
   private renderTime() {
-    const timezone = this.context.backendService.settings.get().timezone;
     return (
       <div className={styles['time']}>
         <span className={styles['label']}>TIME</span>
-        <span className={styles['value']}><DigitalClock timezone={timezone} /></span>
+        <span className={styles['value']}><DigitalClock timezone={this.context.settings.timezone} /></span>
       </div>
     );
   }
@@ -148,12 +149,10 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
     return (<InfoItem key={index} {...infoProps} />);
   }
 
-  private renderWeekCalendar() {
-    const timezone = this.context.backendService.settings.get().timezone;
-
+  private renderWeatherForecast() {
     return (
-      <div className={styles['week']}>
-        <WeatherInfo timezone={timezone} weatherForecast={this.state.weatherForecast} context={this.context} />
+      <div className={styles['weatherForecast']}>
+        <WeatherInfo timezone={this.context.settings.timezone} weatherForecast={this.state.weatherForecast} context={this.context} />
       </div>
     );
   }
@@ -166,7 +165,7 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
         {this.renderTime()}
         {this.renderLocation()}
         {this.renderInfoItems()}
-        {this.renderWeekCalendar()}
+        {this.renderWeatherForecast()}
         <div className={styles['content']}>
           {this.props.contentId && this.context.renderComponent({ id: this.props.contentId })}
         </div>

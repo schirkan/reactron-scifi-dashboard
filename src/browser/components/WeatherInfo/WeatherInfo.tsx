@@ -25,10 +25,12 @@ export class WeatherInfo extends React.Component<IWeatherInfoProps> {
   }
 
   private renderItem(condition: IWeatherCondition, lastItem: IWeatherCondition | undefined) {
+    const night = condition && condition.weather_icon.endsWith('n');
+
     const weatherIcon = this.props.context.renderComponent({
       moduleName: 'reactron-openweathermap',
       componentName: 'WeatherIcon',
-      options: { weatherId: condition.weather_id },
+      options: { weatherId: condition.weather_id, night },
       className: styles['weatherIcon']
     });
 

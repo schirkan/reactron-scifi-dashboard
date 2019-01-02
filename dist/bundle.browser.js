@@ -174,10 +174,11 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                     // 
                 };
                 WeatherInfo.prototype.renderItem = function (condition, lastItem) {
+                    var night = condition && condition.weather_icon.endsWith('n');
                     var weatherIcon = this.props.context.renderComponent({
                         moduleName: 'reactron-openweathermap',
                         componentName: 'WeatherIcon',
-                        options: { weatherId: condition.weather_id },
+                        options: { weatherId: condition.weather_id, night: night },
                         className: styles$2['weatherIcon']
                     });
                     var date = moment(condition.dt * 1000).tz(this.props.timezone);
@@ -288,8 +289,8 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                 return undefined;
             };
 
-            var css$3 = "section.Dashboard_Dashboard__2t1GB {\n  height: 100%;\n  width: 100%;\n  background: #000;\n  color: white; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH {\n    position: absolute;\n    left: 40px;\n    top: 40px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_dayOfWeek__2kp-Y {\n      text-transform: uppercase;\n      font-size: 35px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_monthAndDay__1TIWe {\n      position: relative;\n      display: inline-block;\n      z-index: 1;\n      line-height: 60px;\n      background: #fff;\n      color: #000;\n      font-weight: bold;\n      font-size: 50px;\n      padding: 0 0.2em;\n      border-radius: 2px; }\n      section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_monthAndDay__1TIWe .Dashboard_month__nT_Mh {\n        text-transform: uppercase; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block1__1R9fJ,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block2__3qHsy,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block3__R7UUQ,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block4__2gXjX {\n      height: 60px;\n      transform: skew(-20deg) translateX(-35px);\n      float: right;\n      margin-right: 3px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block1__1R9fJ {\n      width: 50px;\n      background: #fff; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block2__3qHsy {\n      width: 35px;\n      background: #eee; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block3__R7UUQ {\n      width: 15px;\n      background: #ddd; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block4__2gXjX {\n      width: 10px;\n      background: #ccc; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_weatherIcon__2DKkm {\n      width: auto;\n      float: right;\n      font-size: 50px;\n      line-height: 60px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm,\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    position: absolute;\n    right: 40px;\n    font-size: 25px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm .Dashboard_label__1oDz7,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI .Dashboard_label__1oDz7 {\n      text-transform: uppercase;\n      font-weight: bold;\n      color: #ccc;\n      margin-right: 0.5em; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm {\n    top: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    top: 70px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_infos__1Iiv6 {\n    position: absolute;\n    left: 50px;\n    width: 340px;\n    top: 200px;\n    bottom: 40px;\n    overflow: auto; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_week__24XXp {\n    position: absolute;\n    left: 40px;\n    right: 40px;\n    bottom: 40px;\n    height: 100px;\n    overflow: hidden; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_content__2ay2Q {\n    position: absolute;\n    left: 400px;\n    top: 200px;\n    right: 40px;\n    bottom: 40px;\n    overflow: auto; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_leftLine__1PY7o {\n    position: absolute;\n    top: 20px;\n    left: 17px;\n    bottom: 20px;\n    width: 3px;\n    background: #ccc;\n    border-radius: 2px; }\n";
-            var styles$3 = {"Dashboard":"Dashboard_Dashboard__2t1GB","date":"Dashboard_date__2lNeH","dayOfWeek":"Dashboard_dayOfWeek__2kp-Y","monthAndDay":"Dashboard_monthAndDay__1TIWe","month":"Dashboard_month__nT_Mh","block1":"Dashboard_block1__1R9fJ","block2":"Dashboard_block2__3qHsy","block3":"Dashboard_block3__R7UUQ","block4":"Dashboard_block4__2gXjX","weatherIcon":"Dashboard_weatherIcon__2DKkm","time":"Dashboard_time__1FMqm","location":"Dashboard_location__3xgOI","label":"Dashboard_label__1oDz7","infos":"Dashboard_infos__1Iiv6","week":"Dashboard_week__24XXp","content":"Dashboard_content__2ay2Q","leftLine":"Dashboard_leftLine__1PY7o"};
+            var css$3 = "section.Dashboard_Dashboard__2t1GB {\n  height: 100%;\n  width: 100%;\n  background: #000;\n  color: white; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH {\n    position: absolute;\n    left: 40px;\n    top: 40px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_dayOfWeek__2kp-Y {\n      text-transform: uppercase;\n      font-size: 35px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_monthAndDay__1TIWe {\n      position: relative;\n      display: inline-block;\n      z-index: 1;\n      line-height: 60px;\n      background: #fff;\n      color: #000;\n      font-weight: bold;\n      font-size: 50px;\n      padding: 0 0.2em;\n      border-radius: 2px; }\n      section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_monthAndDay__1TIWe .Dashboard_month__nT_Mh {\n        text-transform: uppercase; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block1__1R9fJ,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block2__3qHsy,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block3__R7UUQ,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block4__2gXjX {\n      height: 60px;\n      transform: skew(-20deg) translateX(-35px);\n      float: right;\n      margin-right: 3px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block1__1R9fJ {\n      width: 50px;\n      background: #fff; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block2__3qHsy {\n      width: 35px;\n      background: #eee; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block3__R7UUQ {\n      width: 15px;\n      background: #ddd; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_block4__2gXjX {\n      width: 10px;\n      background: #ccc; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_date__2lNeH .Dashboard_weatherIcon__2DKkm {\n      width: auto;\n      float: right;\n      font-size: 50px;\n      line-height: 60px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm,\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    position: absolute;\n    right: 40px;\n    font-size: 25px; }\n    section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm .Dashboard_label__1oDz7,\n    section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI .Dashboard_label__1oDz7 {\n      text-transform: uppercase;\n      font-weight: bold;\n      color: #ccc;\n      margin-right: 0.5em; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_time__1FMqm {\n    top: 40px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_location__3xgOI {\n    top: 70px; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_infos__1Iiv6 {\n    position: absolute;\n    left: 50px;\n    width: 340px;\n    top: 200px;\n    bottom: 40px;\n    overflow: auto; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_weatherForecast__1fzIt {\n    position: absolute;\n    left: 40px;\n    right: 40px;\n    bottom: 40px;\n    height: 100px;\n    overflow: hidden; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_content__2ay2Q {\n    position: absolute;\n    left: 400px;\n    top: 200px;\n    right: 40px;\n    bottom: 40px;\n    overflow: auto; }\n  section.Dashboard_Dashboard__2t1GB .Dashboard_leftLine__1PY7o {\n    position: absolute;\n    top: 20px;\n    left: 17px;\n    bottom: 20px;\n    width: 3px;\n    background: #ccc;\n    border-radius: 2px; }\n";
+            var styles$3 = {"Dashboard":"Dashboard_Dashboard__2t1GB","date":"Dashboard_date__2lNeH","dayOfWeek":"Dashboard_dayOfWeek__2kp-Y","monthAndDay":"Dashboard_monthAndDay__1TIWe","month":"Dashboard_month__nT_Mh","block1":"Dashboard_block1__1R9fJ","block2":"Dashboard_block2__3qHsy","block3":"Dashboard_block3__R7UUQ","block4":"Dashboard_block4__2gXjX","weatherIcon":"Dashboard_weatherIcon__2DKkm","time":"Dashboard_time__1FMqm","location":"Dashboard_location__3xgOI","label":"Dashboard_label__1oDz7","infos":"Dashboard_infos__1Iiv6","weatherForecast":"Dashboard_weatherForecast__1fzIt","content":"Dashboard_content__2ay2Q","leftLine":"Dashboard_leftLine__1PY7o"};
             styleInject(css$3);
 
             var Dashboard = exports('Dashboard', /** @class */ (function (_super) {
@@ -336,16 +337,17 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                 //   );
                 // }
                 Dashboard.prototype.renderDate = function () {
-                    var timezone = this.context.backendService.settings.get().timezone;
-                    var m = moment().tz(timezone);
+                    var m = moment().tz(this.context.settings.timezone);
                     var dayOfWeek = m.format('dddd');
                     var month = m.format("MMM");
                     var day = m.format("Do");
-                    var weatherId = this.state.weatherForecast && this.state.weatherForecast.list[0].weather_id;
+                    var condition = this.state.weatherForecast && this.state.weatherForecast.list[0];
+                    var weatherId = condition && condition.weather_id;
+                    var night = condition && condition.weather_icon.endsWith('n');
                     var weatherIcon = this.context.renderComponent({
                         moduleName: 'reactron-openweathermap',
                         componentName: 'WeatherIcon',
-                        options: { weatherId: weatherId },
+                        options: { weatherId: weatherId, night: night },
                         className: styles$3['weatherIcon']
                     });
                     return (createElement("div", { className: styles$3['date'] },
@@ -361,11 +363,10 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                         createElement("div", { className: styles$3['block1'] })));
                 };
                 Dashboard.prototype.renderTime = function () {
-                    var timezone = this.context.backendService.settings.get().timezone;
                     return (createElement("div", { className: styles$3['time'] },
                         createElement("span", { className: styles$3['label'] }, "TIME"),
                         createElement("span", { className: styles$3['value'] },
-                            createElement(DigitalClock, { timezone: timezone }))));
+                            createElement(DigitalClock, { timezone: this.context.settings.timezone }))));
                 };
                 Dashboard.prototype.renderLocation = function () {
                     return (createElement("div", { className: styles$3['location'] },
@@ -388,10 +389,9 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                     }
                     return (createElement(InfoItem, __assign({ key: index }, infoProps)));
                 };
-                Dashboard.prototype.renderWeekCalendar = function () {
-                    var timezone = this.context.backendService.settings.get().timezone;
-                    return (createElement("div", { className: styles$3['week'] },
-                        createElement(WeatherInfo, { timezone: timezone, weatherForecast: this.state.weatherForecast, context: this.context })));
+                Dashboard.prototype.renderWeatherForecast = function () {
+                    return (createElement("div", { className: styles$3['weatherForecast'] },
+                        createElement(WeatherInfo, { timezone: this.context.settings.timezone, weatherForecast: this.state.weatherForecast, context: this.context })));
                 };
                 Dashboard.prototype.render = function () {
                     return (createElement("section", { className: styles$3['Dashboard'] },
@@ -400,7 +400,7 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                         this.renderTime(),
                         this.renderLocation(),
                         this.renderInfoItems(),
-                        this.renderWeekCalendar(),
+                        this.renderWeatherForecast(),
                         createElement("div", { className: styles$3['content'] }, this.props.contentId && this.context.renderComponent({ id: this.props.contentId }))));
                 };
                 Dashboard.defaultProps = {
