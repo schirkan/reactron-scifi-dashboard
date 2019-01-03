@@ -17,7 +17,7 @@ export class DashboardService implements IReactronService {
       parentId: 'scifi-dashboard-page',
       componentName: 'Dashboard',
       moduleName: 'reactron-scifi-dashboard',
-      options: {}
+      options: { location: { cityName: 'New York' } }
     };
 
     // register component

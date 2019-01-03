@@ -410,6 +410,11 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                 return Dashboard;
             }(Component)));
 
+            var locationInput = function (props) {
+                return props && props.value && (props.value.cityName || props.value.zip) ||
+                    (createElement("span", { style: { color: 'red' } }, "missing"));
+            };
+
             var components = exports('components', [{
                     component: Dashboard,
                     name: 'Dashboard',
@@ -431,9 +436,7 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                                     displayName: 'Zip, Country Code',
                                     valueType: 'string'
                                 }],
-                            inputControl: function (props) {
-                                return props && props.value && (props.value.cityName || props.value.zip) || '';
-                            }
+                            inputControl: locationInput
                         }, {
                             name: 'infoItems',
                             displayName: 'Infos',

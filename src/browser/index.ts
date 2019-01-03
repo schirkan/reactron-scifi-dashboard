@@ -1,5 +1,6 @@
-import { IInputComponentProps, IReactronComponentDefinition } from '@schirkan/reactron-interfaces';
+import { IReactronComponentDefinition } from '@schirkan/reactron-interfaces';
 import { Dashboard } from './components/Dashboard/Dashboard';
+import { locationInput } from './components/locationInput';
 
 export const components: IReactronComponentDefinition[] = [{
   component: Dashboard,
@@ -22,9 +23,7 @@ export const components: IReactronComponentDefinition[] = [{
       displayName: 'Zip, Country Code',
       valueType: 'string'
     }],
-    inputControl: (props: IInputComponentProps) => {
-      return props && props.value && (props.value.cityName || props.value.zip) || '';
-    }
+    inputControl: locationInput
   }, {
     name: 'infoItems',
     displayName: 'Infos',
