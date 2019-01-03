@@ -74,7 +74,7 @@ var DashboardService = /** @class */ (function () {
                     parentId: 'scifi-dashboard-page',
                     componentName: 'Dashboard',
                     moduleName: 'reactron-scifi-dashboard',
-                    options: {}
+                    options: { location: { cityName: 'New York' } }
                 };
                 components = context.backendService.webComponentsManager.getAll();
                 if (!components.find(function (x) { return x.id === component.id; })) {
