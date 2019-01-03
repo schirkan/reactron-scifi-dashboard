@@ -4,8 +4,17 @@ export class DashboardService implements IReactronService {
   public async start(context: IReactronServiceContext): Promise<void> {
     console.log('DashboardService.start');
 
+    const page: IWebPageOptions = {
+      id: 'scifi-dashboard-page',
+      title: 'Scifi Dashboard',
+      path: '/dashboard',
+      webComponentId: 'scifi-dashboard',
+      style: {}
+    };
+
     const component: IWebComponentOptions = {
       id: 'scifi-dashboard',
+      parentId: 'scifi-dashboard-page',
       componentName: 'Dashboard',
       moduleName: 'reactron-scifi-dashboard',
       options: {}
@@ -17,18 +26,9 @@ export class DashboardService implements IReactronService {
       context.backendService.webComponentsManager.createOrUpdate(component);
     }
 
-    const page: IWebPageOptions = {
-      id: 'scifi-dashboard-page',
-      title: 'Scifi Dashboard',
-      path: '/dashboard',
-      webComponentId: 'scifi-dashboard',
-      style: {}
-    };
-
     // register page
     const pages = context.backendService.webPageManager.getAll();
     if (!pages.find(x => x.id === page.id)) {
-
       context.backendService.webPageManager.createOrUpdate(page);
 
       // set start page

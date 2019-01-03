@@ -4,6 +4,6 @@ import { DashboardService } from "./services/DashboardService";
 export const services: IReactronServiceDefinition[] = [{
     name: 'ScifiDashboardService',
     displayName: 'Scifi-Dashboard Service',
-    description: 'Registers Admin page on startup',
+    description: 'Registers Dashboard page on startup',
     service: DashboardService
 }];

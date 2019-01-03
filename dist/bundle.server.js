@@ -59,11 +59,19 @@ var DashboardService = /** @class */ (function () {
     }
     DashboardService.prototype.start = function (context) {
         return __awaiter(this, void 0, Promise, function () {
-            var component, components, page, pages, settings;
+            var page, component, components, pages, settings;
             return __generator(this, function (_a) {
                 console.log('DashboardService.start');
+                page = {
+                    id: 'scifi-dashboard-page',
+                    title: 'Scifi Dashboard',
+                    path: '/dashboard',
+                    webComponentId: 'scifi-dashboard',
+                    style: {}
+                };
                 component = {
                     id: 'scifi-dashboard',
+                    parentId: 'scifi-dashboard-page',
                     componentName: 'Dashboard',
                     moduleName: 'reactron-scifi-dashboard',
                     options: {}
@@ -72,13 +80,6 @@ var DashboardService = /** @class */ (function () {
                 if (!components.find(function (x) { return x.id === component.id; })) {
                     context.backendService.webComponentsManager.createOrUpdate(component);
                 }
-                page = {
-                    id: 'scifi-dashboard-page',
-                    title: 'Scifi Dashboard',
-                    path: '/dashboard',
-                    webComponentId: 'scifi-dashboard',
-                    style: {}
-                };
                 pages = context.backendService.webPageManager.getAll();
                 if (!pages.find(function (x) { return x.id === page.id; })) {
                     context.backendService.webPageManager.createOrUpdate(page);
@@ -96,7 +97,7 @@ var DashboardService = /** @class */ (function () {
 var services = [{
         name: 'ScifiDashboardService',
         displayName: 'Scifi-Dashboard Service',
-        description: 'Registers Admin page on startup',
+        description: 'Registers Dashboard page on startup',
         service: DashboardService
     }];
 
