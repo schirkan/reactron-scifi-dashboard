@@ -1,6 +1,6 @@
 {
     "name": "reactron-scifi-dashboard",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "description": "Scifi style Dashboard",
     "author": {
         "name": "Martin Pietschmann",
@@ -50,7 +50,6 @@
         "rollup-plugin-commonjs": "^9.2.0",
         "rollup-plugin-node-resolve": "^4.0.0",
         "rollup-plugin-postcss": "^1.6.3",
-        "rollup-plugin-replace": "^2.1.0",
         "rollup-plugin-serve": "^1.0.0",
         "rollup-plugin-typescript": "^1.0.0",
         "rollup-watch": "^4.3.1",
