@@ -2,8 +2,6 @@ import { IReactronService, IReactronServiceContext, IWebComponentOptions, IWebPa
 
 export class DashboardService implements IReactronService {
   public async start(context: IReactronServiceContext): Promise<void> {
-    console.log('DashboardService.start');
-
     const page: IWebPageOptions = {
       id: 'scifi-dashboard-page',
       title: 'Scifi Dashboard',

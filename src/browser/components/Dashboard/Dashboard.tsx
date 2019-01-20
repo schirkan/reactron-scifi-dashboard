@@ -82,9 +82,9 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
     const month = m.format("MMM");
     const day = m.format("Do");
 
-    const condition = this.state.weatherForecast && this.state.weatherForecast.list[0];
-    const weatherId = condition && condition.weather_id;
-    const night = condition && condition.weather_icon.endsWith('n');
+    const condition = this.state.weatherForecast && this.state.weatherForecast.conditions[0];
+    const weatherId = condition && condition.weatherId;
+    const night = condition && condition.weatherIcon.endsWith('n');
     
     const weatherIcon = this.context.renderComponent({
       moduleName: 'reactron-openweathermap',
@@ -121,7 +121,7 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
     return (
       <div className={styles['location']}>
         <span className={styles['label']}>LOCATION</span>
-        <span className={styles['value']}>{this.state.weatherForecast && this.state.weatherForecast.city.name}</span>
+        <span className={styles['value']}>{this.state.weatherForecast && this.state.weatherForecast.location.name}</span>
       </div>
     );
   }
@@ -140,7 +140,7 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
       return null;
     }
 
-    const condition = this.state.weatherForecast.list[0];
+    const condition = this.state.weatherForecast.conditions[0];
     const infoProps = getInfoItemData(info, this.state.units, condition);
 
     if (!infoProps) {

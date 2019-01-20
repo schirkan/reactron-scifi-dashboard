@@ -71,9 +71,9 @@ export const getInfoItemData = (info: string, units: string, condition: IWeather
     case 'wind':
       return {
         title: 'Wind',
-        value: numeral(condition.wind_speed).format('0.0'),
+        value: numeral(condition.windSpeed).format('0.0'),
         circleContent: units === 'imperial' ? 'mph' : 'km/h',
-        circleStart: 88 + condition.wind_deg,
+        circleStart: 88 + condition.windDegree,
         circlePercent: 4
       };
   }

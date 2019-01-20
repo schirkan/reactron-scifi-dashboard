@@ -25,33 +25,33 @@ export class WeatherInfo extends React.Component<IWeatherInfoProps> {
   }
 
   private renderItem(condition: IWeatherCondition, lastItem: IWeatherCondition | undefined) {
-    const night = condition && condition.weather_icon.endsWith('n');
+    const night = condition && condition.weatherIcon.endsWith('n');
 
     const weatherIcon = this.props.context.renderComponent({
       moduleName: 'reactron-openweathermap',
       componentName: 'WeatherIcon',
-      options: { weatherId: condition.weather_id, night },
+      options: { weatherId: condition.weatherId, night },
       className: styles['weatherIcon']
     });
 
-    const date = moment(condition.dt * 1000).tz(this.props.timezone);
+    const date = moment(condition.timestamp * 1000).tz(this.props.timezone);
     let valueTop = date.format('L');
     if (lastItem) {
-      const lastDate = moment(lastItem.dt * 1000).tz(this.props.timezone);
+      const lastDate = moment(lastItem.timestamp * 1000).tz(this.props.timezone);
       if (date.dayOfYear() === lastDate.dayOfYear()) {
         valueTop = '';
       }
     }
 
     const data: IWeatherInfoItemProps = {
-      valueBottom: condition.weather_description,
+      valueBottom: condition.weatherDescription,
       valueLeftBottom: numeral(condition.temp).format('0.0'),
       valueLeftTop: date.hour(),
       valueRight: weatherIcon,
       valueTop,
     };
 
-    return (<WeatherInfoItem {...data} key={condition.dt} />);
+    return (<WeatherInfoItem {...data} key={condition.timestamp} />);
   }
 
   private renderItems() {
@@ -59,7 +59,7 @@ export class WeatherInfo extends React.Component<IWeatherInfoProps> {
       return null;
     }
     let lastItem: IWeatherCondition | undefined;
-    return this.props.weatherForecast.list.slice(0, 10).map(item => {
+    return this.props.weatherForecast.conditions.slice(0, 10).map(item => {
       const result = this.renderItem(item, lastItem)
       lastItem = item;
       return result;

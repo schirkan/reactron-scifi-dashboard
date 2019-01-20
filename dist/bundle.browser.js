@@ -174,29 +174,29 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                     // 
                 };
                 WeatherInfo.prototype.renderItem = function (condition, lastItem) {
-                    var night = condition && condition.weather_icon.endsWith('n');
+                    var night = condition && condition.weatherIcon.endsWith('n');
                     var weatherIcon = this.props.context.renderComponent({
                         moduleName: 'reactron-openweathermap',
                         componentName: 'WeatherIcon',
-                        options: { weatherId: condition.weather_id, night: night },
+                        options: { weatherId: condition.weatherId, night: night },
                         className: styles$2['weatherIcon']
                     });
-                    var date = moment(condition.dt * 1000).tz(this.props.timezone);
+                    var date = moment(condition.timestamp * 1000).tz(this.props.timezone);
                     var valueTop = date.format('L');
                     if (lastItem) {
-                        var lastDate = moment(lastItem.dt * 1000).tz(this.props.timezone);
+                        var lastDate = moment(lastItem.timestamp * 1000).tz(this.props.timezone);
                         if (date.dayOfYear() === lastDate.dayOfYear()) {
                             valueTop = '';
                         }
                     }
                     var data = {
-                        valueBottom: condition.weather_description,
+                        valueBottom: condition.weatherDescription,
                         valueLeftBottom: numeral(condition.temp).format('0.0'),
                         valueLeftTop: date.hour(),
                         valueRight: weatherIcon,
                         valueTop: valueTop,
                     };
-                    return (createElement(WeatherInfoItem, __assign({}, data, { key: condition.dt })));
+                    return (createElement(WeatherInfoItem, __assign({}, data, { key: condition.timestamp })));
                 };
                 WeatherInfo.prototype.renderItems = function () {
                     var _this = this;
@@ -204,7 +204,7 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                         return null;
                     }
                     var lastItem;
-                    return this.props.weatherForecast.list.slice(0, 10).map(function (item) {
+                    return this.props.weatherForecast.conditions.slice(0, 10).map(function (item) {
                         var result = _this.renderItem(item, lastItem);
                         lastItem = item;
                         return result;
@@ -280,9 +280,9 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                     case 'wind':
                         return {
                             title: 'Wind',
-                            value: numeral(condition.wind_speed).format('0.0'),
+                            value: numeral(condition.windSpeed).format('0.0'),
                             circleContent: units === 'imperial' ? 'mph' : 'km/h',
-                            circleStart: 88 + condition.wind_deg,
+                            circleStart: 88 + condition.windDegree,
                             circlePercent: 4
                         };
                 }
@@ -341,9 +341,9 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                     var dayOfWeek = m.format('dddd');
                     var month = m.format("MMM");
                     var day = m.format("Do");
-                    var condition = this.state.weatherForecast && this.state.weatherForecast.list[0];
-                    var weatherId = condition && condition.weather_id;
-                    var night = condition && condition.weather_icon.endsWith('n');
+                    var condition = this.state.weatherForecast && this.state.weatherForecast.conditions[0];
+                    var weatherId = condition && condition.weatherId;
+                    var night = condition && condition.weatherIcon.endsWith('n');
                     var weatherIcon = this.context.renderComponent({
                         moduleName: 'reactron-openweathermap',
                         componentName: 'WeatherIcon',
@@ -371,7 +371,7 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                 Dashboard.prototype.renderLocation = function () {
                     return (createElement("div", { className: styles$3['location'] },
                         createElement("span", { className: styles$3['label'] }, "LOCATION"),
-                        createElement("span", { className: styles$3['value'] }, this.state.weatherForecast && this.state.weatherForecast.city.name)));
+                        createElement("span", { className: styles$3['value'] }, this.state.weatherForecast && this.state.weatherForecast.location.name)));
                 };
                 Dashboard.prototype.renderInfoItems = function () {
                     var _this = this;
@@ -382,7 +382,7 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                     if (!this.state.weatherForecast || !this.state.units) {
                         return null;
                     }
-                    var condition = this.state.weatherForecast.list[0];
+                    var condition = this.state.weatherForecast.conditions[0];
                     var infoProps = getInfoItemData(info, this.state.units, condition);
                     if (!infoProps) {
                         return null;
