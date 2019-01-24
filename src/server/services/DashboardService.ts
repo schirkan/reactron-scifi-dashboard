@@ -19,20 +19,20 @@ export class DashboardService implements IReactronService {
     };
 
     // register component
-    const components = context.backendService.webComponentsManager.getAll();
+    const components = await context.services.components.getWebComponentOptions();
     if (!components.find(x => x.id === component.id)) {
-      context.backendService.webComponentsManager.createOrUpdate(component);
+      await context.services.components.setWebComponentOptions(component);
     }
 
     // register page
-    const pages = context.backendService.webPageManager.getAll();
+    const pages = await context.services.pages.getWebPages();
     if (!pages.find(x => x.id === page.id)) {
-      context.backendService.webPageManager.createOrUpdate(page);
+      await context.services.pages.setWebPage(page);
 
       // set start page
-      const settings = context.backendService.settings.get();
+      const settings =  {...context.settings};
       settings.startupPath = page.path;
-      context.backendService.settings.set(settings);
+      await context.services.application.setSettings(settings);
     }
   }
 }

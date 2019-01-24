@@ -17,6 +17,7 @@ export default {
         commonjs()
     ],
     external: [
+        '@schirkan/reactron-interfaces',
         'electron'
     ]
 };

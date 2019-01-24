@@ -1,8 +1,10 @@
-System.register(['moment', 'react', 'numeral'], function (exports, module) {
+System.register(['@schirkan/reactron-interfaces', 'moment', 'react', 'numeral'], function (exports, module) {
     'use strict';
-    var moment, Component, createElement, numeral;
+    var topicNames, moment, Component, createElement, numeral;
     return {
         setters: [function (module) {
+            topicNames = module.topicNames;
+        }, function (module) {
             moment = module.default;
         }, function (module) {
             Component = module.Component;
@@ -268,15 +270,24 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                 constructor(props) {
                     super(props);
                     this.state = {};
+                    this.loadData = this.loadData.bind(this);
                 }
                 componentDidMount() {
                     return __awaiter(this, void 0, void 0, function* () {
-                        this.context.topics.subscribe('system-settings-updated', () => this.forceUpdate());
+                        this.context.topics.subscribe(topicNames.refresh, this.loadData);
+                        this.loadData();
+                    });
+                }
+                componentWillUnmount() {
+                    this.context.topics.unsubscribe(topicNames.refresh, this.loadData);
+                }
+                loadData() {
+                    return __awaiter(this, void 0, void 0, function* () {
                         if (this.props.location.zip || this.props.location.cityName) {
-                            const weatherService = this.context.getService('WeatherService', 'reactron-openweathermap');
+                            const weatherService = yield this.context.getService('WeatherService', 'reactron-openweathermap');
                             if (weatherService) {
                                 const weatherForecast = yield weatherService.getFiveDaysForecast({ zip: this.props.location.zip, cityName: this.props.location.cityName });
-                                const options = weatherService.getOptions && (yield weatherService.getOptions());
+                                const options = yield weatherService.getOptions();
                                 this.setState({
                                     weatherForecast,
                                     units: options && options.units || 'metric'
@@ -285,26 +296,6 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                         }
                     });
                 }
-                /* <DynamicSVG>
-                    {bounds => this.renderFrame(bounds)}
-                  </DynamicSVG> */
-                // private renderFrame(bounds: ClientRect) {
-                //   const stroke = 5;
-                //   const points: IPosition[] = [
-                //     { x: bounds.width - stroke, y: stroke },
-                //     { x: stroke, y: stroke },
-                //     { x: stroke, y: bounds.height - stroke },
-                //     { x: bounds.width - 77, y: bounds.height - stroke },
-                //     { x: bounds.width - 47, y: bounds.height - 30 },
-                //     { x: bounds.width - stroke, y: bounds.height - 30 },
-                //   ];
-                //   return (
-                //     <React.Fragment>
-                //       <SVGShape path={points} stroke="#379" strokeSize={stroke} fill="#444" />
-                //       <CircuitBoard />
-                //     </React.Fragment>
-                //   );
-                // }
                 renderDate() {
                     const m = moment().tz(this.context.settings.timezone);
                     const dayOfWeek = m.format('dddd');
@@ -355,7 +346,7 @@ System.register(['moment', 'react', 'numeral'], function (exports, module) {
                     if (!infoProps) {
                         return null;
                     }
-                    return (createElement(InfoItem, Object.assign({ key: index }, infoProps)));
+                    return createElement(InfoItem, Object.assign({ key: index }, infoProps));
                 }
                 renderWeatherForecast() {
                     return (createElement("div", { className: styles$3['weatherForecast'] },
