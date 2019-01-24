@@ -273,13 +273,16 @@ System.register(['@schirkan/reactron-interfaces', 'moment', 'react', 'numeral'],
                     this.loadData = this.loadData.bind(this);
                 }
                 componentDidMount() {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        this.context.topics.subscribe(topicNames.refresh, this.loadData);
-                        this.loadData();
-                    });
+                    this.context.topics.subscribe(topicNames.refresh, this.loadData);
+                    this.loadData();
                 }
                 componentWillUnmount() {
                     this.context.topics.unsubscribe(topicNames.refresh, this.loadData);
+                }
+                componentDidUpdate(prevProps) {
+                    if (JSON.stringify(this.props) !== JSON.stringify(prevProps)) {
+                        this.loadData();
+                    }
                 }
                 loadData() {
                     return __awaiter(this, void 0, void 0, function* () {

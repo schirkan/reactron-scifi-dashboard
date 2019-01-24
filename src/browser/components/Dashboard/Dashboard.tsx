@@ -33,17 +33,22 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
     super(props);
 
     this.state = {};
-
     this.loadData = this.loadData.bind(this);
   }
 
-  public async componentDidMount() {
+  public componentDidMount() {
     this.context.topics.subscribe(topicNames.refresh, this.loadData);
     this.loadData();
   }
 
   public componentWillUnmount() {
     this.context.topics.unsubscribe(topicNames.refresh, this.loadData);
+  }
+
+  public componentDidUpdate(prevProps: any) {
+    if (JSON.stringify(this.props) !== JSON.stringify(prevProps)) {
+      this.loadData();
+    }
   }
 
   private async loadData() {
