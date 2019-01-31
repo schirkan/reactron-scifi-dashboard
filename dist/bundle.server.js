@@ -44,14 +44,14 @@ class DashboardService {
                 options: { location: { cityName: 'New York' } }
             };
             // register component
-            const components = yield context.services.components.getWebComponentOptions();
+            const components = yield context.services.components.getAll();
             if (!components.find(x => x.id === component.id)) {
-                yield context.services.components.setWebComponentOptions(component);
+                yield context.services.components.createOrUpdate(component);
             }
             // register page
-            const pages = yield context.services.pages.getWebPages();
+            const pages = yield context.services.pages.getAll();
             if (!pages.find(x => x.id === page.id)) {
-                yield context.services.pages.setWebPage(page);
+                yield context.services.pages.createOrUpdate(page);
                 // set start page
                 const settings = Object.assign({}, context.settings);
                 settings.startupPath = page.path;
